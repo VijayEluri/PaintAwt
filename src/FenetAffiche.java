@@ -11,7 +11,8 @@ class FenetAffiche  extends Frame {
 	Color couranteCol;
 	//Variable de sauvegarde de la figure sélectionnée
 	FigureGraphique save;
-	
+	//Variable pour stocker le type de dessin à produire
+	String choice = "rectangle";
 	//Le mouseMotionListener pour le pseudo drag and drop
 	GestionDeplacementSouris motionListener = new GestionDeplacementSouris(this);
 	
@@ -67,19 +68,26 @@ class FenetAffiche  extends Frame {
 	public void boutonSourisRelache(int x, int y)	{	
 		Graphics g = zd.getGraphics();
 		//$$3
-		System.out.println("bouton gauche relaché x:" + x + " y: "+ y);
+		//System.out.println("bouton gauche relaché x:" + x + " y: "+ y);
 		//$$4
-		/*g.setColor(couranteCol);
-		g.drawOval(xEnfonce, yEnfonce, Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
-		//$$5
-		int rayon = Math.min(Math.abs(Math.abs(x - xEnfonce) / 2), Math.abs(y - yEnfonce));
-		Cercle cercle = new Cercle("New", couranteCol, Color.white, xEnfonce, yEnfonce, rayon);
-		figs.add(cercle);*/
 		if (save != null) {
 			save.deplace(x,y);
 			save.dessineToi(g);
 			zd.removeMouseMotionListener(motionListener);
-			dessineFigs(g);
+		} else {
+			g.setColor(couranteCol);
+			if (choice.compareTo("cercle") == 0) {				
+				g.drawOval(xEnfonce, yEnfonce, Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
+				//$$5
+				int rayon = Math.min(Math.abs(Math.abs(x - xEnfonce) / 2), Math.abs(y - yEnfonce));
+				Cercle cercle = new Cercle("New", couranteCol, Color.white, xEnfonce, yEnfonce, rayon);
+				figs.add(cercle);
+			} else if (choice.compareTo("rectangle") == 0) {
+				Point_2D p = new Point_2D(Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
+				g.drawRect(xEnfonce, yEnfonce, p.x, p.y);
+				Rectangle rectangle = new Rectangle("NewRect", couranteCol, Color.yellow, xEnfonce, yEnfonce, p.x, p.y);
+				figs.add(rectangle);
+			}
 		}
 	}
 	
