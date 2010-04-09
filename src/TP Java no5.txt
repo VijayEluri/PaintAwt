@@ -1,0 +1,41 @@
+Indication : les endroits à modifier sont signalés par des commentaires $$x 
+où x est le numéro de la question 
+
+1) Ajouter à la classe FenetAffiche un controleur ControleurFenet qui terminera 
+l'application lorsque l'utilisateur cliquera dans la case de fermeture
+de la fenêtre.
+
+2) La méthode paint() de ZoneDessin est appelée automatiquement lorsque le
+ canvas est réexposée (réouverture de la fenetre, suppression d'une fenetre 
+ qui le masquait....)
+ Modifier la méhode paint pour que les objets conenus dans le vecteur figs
+ de FenetAffiche soit réaffichés lorsque la ZoneDessin est réaffichée.
+
+
+3) ajouter à la classe ZoneDessin un controleur pour les boutons de souris de la classe 
+GestionBoutonsSouris; Lorsque l'utilisateur appuie sur le bouton droit de la souris, on
+doit voir le message ci-dessous affiché dans la fenêtre de commande (fenetre noire):
+  bouton gauche enfoncé au point <x>,<y>
+
+Lorsque l'utilisateur relache le bouton droit de la souris, on doit voir le message 
+ci-dessous affiché dans la fenetre de commande (fenetre noire):
+  bouton gauche relaché au point <x>,<y>
+  
+
+4) Modifier la méthode boutonSourisRelache() pour quelle dessine un ovale de la couleur 
+contenue dans l'attribut CouranteCol, dont le point haut gauche sera le point où le 
+bouton a été enfoncé, la largeur sera la différence entre le point de relachement et le
+point d'enfoncement, et la hauteur sera la différence entre le point de relachement et
+le point d'enfoncement.
+
+5) Modifier la méthode boutonSourisRelache() pour qu'elle crée un objet de la classe 
+cercle. Son nom sera "Rond", sa couleur de contour couranteCol, sa couleur de remplissage
+blanc, son centre sera le centre de l'oval de la question précédente, son rayon sera 
+le min de la moitié de la largeur et de la moitié de la hauteur (méthode Math.min())
+Ce cercle devra être inséré dans le vector figs et apparaitre en cas de réexposition.
+
+6)Ajouter à FenetAffiche une barre d'outils comprenant un menu couleur permettant de 
+sélectionner une couleur parmi blanc, rouge, jaune, vert, bleu, noir.
+
+7) faire en sorte que lorsque qu'une couleur est sélectionnée, couranteCol recoive cette 
+couleur.
