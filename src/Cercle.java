@@ -4,16 +4,20 @@ public class Cercle extends FigureGraphique
 {
 	protected Point_2D centre;
 	protected int rayon;
+	protected static int nbCercle = 0;
 
 	/**
 	 * Constructeurs
 	 */
-	// constructeur valué 
+	public Cercle() { super();}
+	
+	// constructeur valuï¿½ 
 	public Cercle(String nom,Color cc,Color cr, int x, int y, int r)
 	{
 		super(nom,cc,cr);
 		centre = new Point_2D(x,y);
 		rayon=r;
+		nbCercle += 1;
 	}
 
 
@@ -35,7 +39,7 @@ public class Cercle extends FigureGraphique
 
 	/**
 	 * Concretisation FigureGraphique
-	 * Déplacement du cercle = deplacement du centre
+	 * Dï¿½placement du cercle = deplacement du centre
 	 */
 	public void deplace(int dx, int dy)
 	{	centre.deplace(dx,dy);	}

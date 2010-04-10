@@ -5,17 +5,20 @@ public class Rectangle extends FigureGraphique
 {
 	protected Point_2D pgh;
 	protected int larg,haut;
+	protected static int nbRect = 0;
 
 	/**
 	 * Constructeurs
 	 */
-	// constructeur valué : position + rayon
+	public Rectangle() {super();}
+	// constructeur valuï¿½ : position + rayon
 	public Rectangle(String nom,Color cc, Color cr,int x, int y, int larg,int haut)
 	{
 		super(nom,cc,cr);
 		pgh = new Point_2D(x,y);
 		this.larg = larg;
 		this.haut = haut;
+		nbRect += 1;
 	}
 
 	/**
@@ -46,7 +49,7 @@ public class Rectangle extends FigureGraphique
 	{	return haut;	}
 
 	/**
-	 * Déplacement du cercle = deplacement du centre
+	 * Dï¿½placement du cercle = deplacement du centre
 	 */
 	public void deplace(int dx, int dy)
 	{	pgh.deplace(dx,dy);	}
@@ -73,7 +76,7 @@ public class Rectangle extends FigureGraphique
 		g.setColor(cc);
 		// dessiner le contour du rectangle
 		g.drawRect(pgh.x,pgh.y,larg,haut) ;
-		// afficher le nom de la figure à partir de son centre 
+		// afficher le nom de la figure ï¿½ partir de son centre 
 		g.drawString(nom,getCentre().x,getCentre().y);    
 	}
 }	

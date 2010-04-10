@@ -9,19 +9,22 @@ class FenetAffiche  extends Frame {
 	Vector <FigureGraphique>figs;
 	int xEnfonce,yEnfonce;
 	Color couranteCol;
+	Color couranteFgCol;
 	//Variable de sauvegarde de la figure sélectionnée
 	FigureGraphique save;
 	//Variable pour stocker le type de dessin à produire
-	String choice = "rectangle";
+	String choice;
 	//Le mouseMotionListener pour le pseudo drag and drop
 	GestionDeplacementSouris motionListener = new GestionDeplacementSouris(this);
 	
 	public FenetAffiche(Vector <FigureGraphique>vec)	{
 		setSize(700,500);
 		setTitle("Affichage de Figures Graphiques");
-		setForeground(Color.blue);
-		setBackground(Color.pink);
+		setForeground(Color.black);
+		setBackground(Color.red);
 		couranteCol=Color.blue;
+		couranteFgCol = Color.blue;
+		choice = "rectangle";
 		figs = vec;
 		add(zd = new ZoneDessin(this),"Center");
 		//$$1
@@ -80,22 +83,33 @@ class FenetAffiche  extends Frame {
 				g.drawOval(xEnfonce, yEnfonce, Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
 				//$$5
 				int rayon = Math.min(Math.abs(Math.abs(x - xEnfonce) / 2), Math.abs(y - yEnfonce));
-				Cercle cercle = new Cercle("New", couranteCol, Color.white, xEnfonce, yEnfonce, rayon);
+				Cercle cercle = new Cercle("c" + Cercle.nbCercle, couranteCol, couranteFgCol, xEnfonce, yEnfonce, rayon);
 				figs.add(cercle);
-			} else if (choice.compareTo("rectangle") == 0) {
+			} else {
 				Point_2D p = new Point_2D(Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
 				g.drawRect(xEnfonce, yEnfonce, p.x, p.y);
-				Rectangle rectangle = new Rectangle("NewRect", couranteCol, Color.yellow, xEnfonce, yEnfonce, p.x, p.y);
+				Rectangle rectangle = new Rectangle("r" + Rectangle.nbRect, couranteCol, couranteFgCol, xEnfonce, yEnfonce, p.x, p.y);
 				figs.add(rectangle);
 			}
 		}
+		zd.repaint();
 	}
 	
 	public void boutonSourisDeplace(int x, int y) {
 		Graphics g = zd.getGraphics();
-		save.deplace(x, y);
-		save.dessineToi(g);
-		
+		if (save != null) {
+			save.deplace(x, y);
+			save.dessineToi(g);
+		} else {
+			if (choice.compareTo("cercle") == 0) {
+				g.drawOval(xEnfonce, yEnfonce, Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
+				System.out.println("cer" + x + " " + y);
+			} else { 
+				g.drawRect(xEnfonce, yEnfonce, x, y);
+				System.out.println("rect" + x + " " + y);
+			}
+		}
+		zd.repaint();
 	}
-
+	
 }

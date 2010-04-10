@@ -5,6 +5,7 @@ public abstract class FigureGraphique implements Figure
 	Color cc, cr;
 	String nom;
 	
+	public FigureGraphique() {}
 	public FigureGraphique (String nom, Color cc, Color cr)	{
 		this.cc = cc;	
 		this.cr = cr;	
