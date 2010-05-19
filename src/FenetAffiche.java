@@ -49,9 +49,10 @@ class FenetAffiche  extends Frame {
 
 
 	public void boutonSourisEnfonce(int x, int y)	{
-		xEnfonce = x;
-		yEnfonce = y;
+                xEnfonce = x;
+                yEnfonce = y;
 		save = null;
+                
 		//Test de la gestion de déplacement de figure
 		//Je met une variable FigureGraphique pour save la derniere figure pouvant abriter les bons parametre
 		//Pour l'instant c'est pour test avec la boucle for
