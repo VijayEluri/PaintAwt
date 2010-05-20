@@ -1,6 +1,7 @@
 package fenetres;
 
 import controls.ControlMenuItemLoad;
+import controls.ControlMenuItemNew;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
@@ -35,7 +36,8 @@ public class BarreMenu extends MenuBar {
         //Ajout de actionListener à faire sur les menuItemNouveau
         menuItemQuitter.addActionListener(new ControlMenuItemQuitter());
         menuItemSauvegarde.addActionListener(new ControlMenuItemSave(frame));
-        menuItemCharger.addActionListener(new ControlMenuItemLoad());
+        menuItemCharger.addActionListener(new ControlMenuItemLoad(frame));
+        menuItemNouveau.addActionListener(new ControlMenuItemNew((frame)));
 
         menuFichier.add(menuItemNouveau);
         menuFichier.add(menuItemSauvegarde);

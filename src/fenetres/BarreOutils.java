@@ -1,6 +1,5 @@
 package fenetres;
 
-import fenetres.FenetAffiche;
 import controls.ControlItemCouleurFond;
 import controls.ControlItemForme;
 import controls.ControlItemCouleur;

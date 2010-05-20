@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -23,9 +24,10 @@ public class ControlMenuItemSave implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-
+        JFileChooser fc = new JFileChooser();
+        fc.showSaveDialog(frame);
         try {
-            ObjectOutputStream fluxObjEcrit = new ObjectOutputStream(new FileOutputStream(new File("/home/grimm/perso/test")));
+            ObjectOutputStream fluxObjEcrit = new ObjectOutputStream(new FileOutputStream(fc.getSelectedFile()));
             fluxObjEcrit.writeObject(frame.figs);
         } catch (Exception ex) {
             Logger.getLogger(ControlMenuItemSave.class.getName()).log(Level.SEVERE, null, ex);
