@@ -5,7 +5,7 @@ import controls.ControlMenuItemNew;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
-import controls.ControlMenuItemQuitter;
+import controls.ControlMenuItemExit;
 import controls.ControlMenuItemSave;
 /**
  *
@@ -34,7 +34,7 @@ public class BarreMenu extends MenuBar {
         menuItemAide = new MenuItem("Aide");
 
         //Ajout de actionListener à faire sur les menuItemNouveau
-        menuItemQuitter.addActionListener(new ControlMenuItemQuitter());
+        menuItemQuitter.addActionListener(new ControlMenuItemExit(frame));
         menuItemSauvegarde.addActionListener(new ControlMenuItemSave(frame));
         menuItemCharger.addActionListener(new ControlMenuItemLoad(frame));
         menuItemNouveau.addActionListener(new ControlMenuItemNew((frame)));

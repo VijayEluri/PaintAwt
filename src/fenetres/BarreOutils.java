@@ -12,7 +12,7 @@ public class BarreOutils  extends Panel	{
 		Choice listeCouleurFg;
 		Choice forme;
 		
-		String formes[] = {"rectangle", "cercle"};
+		String formes[] = {"rectangle", "cercle", "triangle", "polygone"};
 		String libelleCouleur[] = {"bleu" ,"blanc","rouge", "jaune", "vert", "noir"};
 		
 		Color couleurs[] = {Color.blue, Color.white, Color.red, Color.yellow, Color.green, Color.black};

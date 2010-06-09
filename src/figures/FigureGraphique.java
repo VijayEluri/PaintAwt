@@ -27,4 +27,5 @@ public abstract class FigureGraphique implements Figure,Serializable {
 
 	public abstract void dessineToi(Graphics g);
 
+        public abstract void translate(Point_2D p);
 }

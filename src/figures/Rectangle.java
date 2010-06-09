@@ -8,7 +8,7 @@ public class Rectangle extends FigureGraphique implements Serializable {
     protected Point_2D pgh;
     protected int larg, haut;
     public static int nbRect = 0;
-
+    protected Point_2D centre;
     /**
      * Constructeurs
      */
@@ -22,6 +22,7 @@ public class Rectangle extends FigureGraphique implements Serializable {
         pgh = new Point_2D(x, y);
         this.larg = larg;
         this.haut = haut;
+        this.centre = new Point_2D(pgh.getX() + (larg) / 2, pgh.getY() + (haut) / 2);
         nbRect += 1;
     }
 
@@ -42,7 +43,7 @@ public class Rectangle extends FigureGraphique implements Serializable {
      * calcul du centre du rectangle
      */
     public Point_2D getCentre() {
-        return new Point_2D(pgh.getX() + (larg) / 2, pgh.getY() + (haut) / 2);
+        return centre;
     }
 
     public int getlarg() {
@@ -57,7 +58,16 @@ public class Rectangle extends FigureGraphique implements Serializable {
      * D�placement du cercle = deplacement du centre
      */
     public void deplace(int dx, int dy) {
-        pgh.deplace(dx, dy);
+       centre.deplace(dx, dy);
+       pgh.setX(centre.getX() - (this.getlarg() / 2));
+       pgh.setY(centre.getY() - (this.gethaut() / 2));
+    }
+
+    public void translate(Point_2D p) {
+        centre.x = centre.x + p.x;
+        centre.y = centre.y + p.y;
+        pgh.setX(centre.getX() - (this.getlarg() / 2));
+        pgh.setY(centre.getY() - (this.gethaut() / 2));
     }
 
     /**

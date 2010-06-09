@@ -80,6 +80,11 @@ public class Cercle extends FigureGraphique implements Serializable {
         return Math.PI * rayon * rayon;
     }
 
+    public void translate(Point_2D p) {
+        centre.x = centre.x + p.x;
+        centre.y = centre.y + p.y;
+    }
+
     public void setCentre(Point_2D centre) {
         this.centre = centre;
     }
