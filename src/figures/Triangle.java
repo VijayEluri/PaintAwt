@@ -2,12 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package figures;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *30 mai 2010
@@ -33,7 +34,7 @@ public class Triangle extends FigureGraphique implements Serializable {
 
     public int[] getYTab() {
         int res[] = new int[3];
-        for (int i=0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             res[i] = points[i].y;
         }
         return res;
@@ -41,15 +42,15 @@ public class Triangle extends FigureGraphique implements Serializable {
 
     public int[] getXTab() {
         int[] res = new int[3];
-        for(int i=0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             res[i] = points[i].x;
         }
         return res;
     }
-    
+
     @Override
     public void dessineToi(Graphics g) {
-         // installer la couleur de remplissage du rectangle
+        // installer la couleur de remplissage du rectangle
         g.setColor(cr);
         // dessiner l'interieur du rectangle
         g.fillPolygon(getXTab(), getYTab(), 3);
@@ -73,18 +74,40 @@ public class Triangle extends FigureGraphique implements Serializable {
 
     @Override
     public void deplace(int dx, int dy) {
+        List<Point_2D> posPoints = new ArrayList();
+
+        for (int i = 0; i < 3; i++) {
+            posPoints.add(new Point_2D(centre.getX() - points[i].getX(), centre.getY() - points[i].getY()));
+        }
         centre.deplace(dx, dy);
+        for (int i = 0; i < 3; i++) {
+            points[i].deplace(centre.getX() - posPoints.get(i).getX(), centre.getY() - posPoints.get(i).getY());
+        }
     }
 
     public void translate(Point_2D p) {
         centre.x = centre.x + p.x;
         centre.y = centre.y + p.y;
+        for (int i = 0; i < 3; i++) {
+            points[i].setX(points[i].getX() + p.x);
+            points[i].setY(points[i].getY() + p.y);
+        }
+        System.out.println(points[0].getX() + ' ' + points[0].getY());
+    }
+
+    // Pour faciliter les calculs dans la fonction contient, on passe par une fonction intermédiaire
+    public int calcPosition(Point_2D s1, Point_2D s2, Point_2D pos) {
+        return s1.getX() * (s2.getY() - pos.getY()) + s2.getX() * (pos.getY() - s1.getY()) + pos.getX() * (s1.getY() - s2.getY());
     }
 
     @Override
     public boolean contient(Point_2D p) {
-        
-        return false;
-    }
+        int i1, i2, i3;
 
+        i1 = calcPosition(points[0], points[1], p);
+        i2 = calcPosition(points[1], points[2], p);
+        i3 = calcPosition(points[2], points[0], p);
+
+        return ((i1 > 0) && (i2 > 0) && (i3 > 0)) || ((i1 < 0) && (i2 < 0) && (i3 < 0));
+    }
 }
