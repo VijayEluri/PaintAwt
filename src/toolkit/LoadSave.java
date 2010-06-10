@@ -35,7 +35,7 @@ public class LoadSave {
         fc.showSaveDialog(frame);
         try {
             ObjectOutputStream fluxObjEcrit = new ObjectOutputStream(new FileOutputStream(fc.getSelectedFile()));
-            fluxObjEcrit.writeObject(frame.figs);
+            fluxObjEcrit.writeObject(frame.getFigs());
         } catch (Exception ex) {
             Logger.getLogger(ControlMenuItemSave.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -47,7 +47,7 @@ public class LoadSave {
         try {
             ObjectInputStream fluxObjLect = new ObjectInputStream(new FileInputStream(fc.getSelectedFile()));
             Object o = fluxObjLect.readObject();
-            frame.figs = (Vector <FigureGraphique>) o;
+            frame.setFigs((Vector<FigureGraphique>) o);
         } catch (Exception ex) {
             Logger.getLogger(ControlMenuItemLoad.class.getName()).log(Level.SEVERE, null, ex);
         }

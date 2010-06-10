@@ -28,7 +28,7 @@ public class ControlMenuItemLoad implements ActionListener {
 
     private void redessiner() {
         Graphics g = frame.zd.getGraphics();
-        for (FigureGraphique current : frame.figs) {
+        for (FigureGraphique current : frame.getFigs()) {
                 current.dessineToi(g);
         }
         frame.zd.repaint();

@@ -20,7 +20,7 @@ public class ControlMenuItemNew implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         FenetDialogues fd = new FenetDialogues(frame);
-        frame.figs.removeAllElements();
+        frame.getFigs().removeAllElements();
         frame.zd.repaint();
     }
 }
