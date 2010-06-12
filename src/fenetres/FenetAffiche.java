@@ -9,29 +9,70 @@ import controls.*;
 import figures.Polygone;
 import figures.Triangle;
 import java.awt.*;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Vector;
 
+/**
+ *
+ * @author grimm
+ */
 public class FenetAffiche extends Frame {
 
+    /**
+     *
+     */
     public ZoneDessin zd;
+    /**
+     *
+     */
     public Graphics gx;
-    public Vector<FigureGraphique> figs;
+    private Vector<FigureGraphique> figs;
     private int xEnfonce, yEnfonce;
     private ArrayList<Point_2D> listePoints = new ArrayList();
+    /**
+     *
+     */
     public Color couranteCol;
+    /**
+     *
+     */
     public Color couranteFgCol;
     //Variable de sauvegarde de la figure sélectionnée
+    /**
+     *
+     */
     public ArrayList<FigureGraphique> save = new ArrayList();
+    /**
+     *
+     */
+    public ArrayList<FigureGraphique> oldSave;
     //Variable pour stocker le type de dessin à produire
+    /**
+     *
+     */
     public String choice;
-    //connaitre si l'utilisateur en à fini avec la sasie des points du polynome
+    //connaitre si l'utilisateur en à fini avec la sasie des points du polynome (touche ctrl enfoncé quoi)
+    /**
+     *
+     */
     public Boolean saisie = false;
+    //nom courant de la figure
+    /**
+     * 
+     */
     public String nom = null;
+    //savoir si la suppression est prévu
+    /**
+     *
+     */
+    public Boolean suppr = false;
     //Le mouseMotionListener pour le pseudo drag and drop
     GestionDeplacementSouris motionListener = new GestionDeplacementSouris(this);
 
+    /**
+     *
+     * @param vec
+     */
     public FenetAffiche(Vector<FigureGraphique> vec) {
         setSize(700, 500);
         setTitle("Affichage de Figures Graphiques");
@@ -55,17 +96,30 @@ public class FenetAffiche extends Frame {
         dessineFigs(gx);
     }
 
+    /**
+     *
+     * @param g
+     */
     public void dessineFigs(Graphics g) {
         for (int i = 0; i < figs.size(); i++) {
             figs.get(i).dessineToi(g);
         }
     }
 
+    /**
+     *
+     * @param color
+     */
     public void changeCouleur(Color color) {
         // faire le changement de couleur
         couranteCol = color;
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     public void boutonSourisEnfonce(int x, int y) {
         xEnfonce = x;
         yEnfonce = y;
@@ -90,6 +144,11 @@ public class FenetAffiche extends Frame {
         listePoints.add(new Point_2D(x, y));
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     public void boutonSourisRelache(int x, int y) {
         Graphics g = zd.getGraphics();
         //$$3
@@ -101,10 +160,11 @@ public class FenetAffiche extends Frame {
                 if (save.size() == 1) {
                     current.deplace(x, y);
                 } else {
-                   current.translate(vect);
+                    current.translate(vect);
                 }
                 current.dessineToi(g);
             }
+            //oldSave = new ArrayList(save);
             save.clear();
             zd.removeMouseMotionListener(motionListener);
         } else if (save.isEmpty()) {
@@ -155,7 +215,12 @@ public class FenetAffiche extends Frame {
         }
         zd.repaint();
     }
-
+    
+    /**
+     *
+     * @param x
+     * @param y
+     */
     public void boutonSourisDeplace(int x, int y) {
         Graphics g = zd.getGraphics();
         Point_2D vect = new Point_2D(Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
@@ -164,7 +229,7 @@ public class FenetAffiche extends Frame {
                 if (save.size() == 1) {
                     current.deplace(x, y);
                 } else {
-                   current.translate(vect);
+                    current.translate(vect);
                 }
                 current.dessineToi(g);
             }
@@ -174,8 +239,9 @@ public class FenetAffiche extends Frame {
                 g.drawOval(xEnfonce, yEnfonce, Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
                 System.out.println("cer" + x + " " + y);
             } else {
-                g.drawRect(xEnfonce, yEnfonce, x, y);
-                System.out.println("rect" + x + " " + y);
+                /*g.drawRect(xEnfonce, yEnfonce, x, y);
+                System.out.println("rect" + x + " " + y);*/
+                g.getClip().contains(x, y);
             }
         }
         zd.repaint();
@@ -204,5 +270,21 @@ public class FenetAffiche extends Frame {
                 new FenetDialogues(this, nom);
                 break;
         }
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Vector<FigureGraphique> getFigs() {
+        return figs;
+    }
+
+    /**
+     *
+     * @param figs
+     */
+    public void setFigs(Vector<FigureGraphique> figs) {
+        this.figs = figs;
     }
 }
