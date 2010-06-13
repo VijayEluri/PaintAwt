@@ -3,7 +3,7 @@ package figures;
 import java.awt.*;
 import java.io.Serializable;
 
-public class Rectangle extends FigureGraphique implements Serializable {
+public class Rectangle extends FigureGraphique {
 
     protected Point_2D pgh;
     protected int larg, haut;

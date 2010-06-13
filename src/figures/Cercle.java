@@ -3,7 +3,7 @@ package figures;
 import java.awt.*;
 import java.io.Serializable;
 
-public class Cercle extends FigureGraphique implements Serializable {
+public class Cercle extends FigureGraphique {
 
     private Point_2D centre;
     private int rayon;

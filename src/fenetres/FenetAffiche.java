@@ -82,16 +82,13 @@ public class FenetAffiche extends Frame {
         couranteFgCol = Color.blue;
         choice = "rectangle";
         figs = vec;
-        add(zd = new ZoneDessin(this), "Center");
+        add(zd = new ZoneDessin(this), "Center");       
         //$$1
         addWindowListener(new ControlFenet(this));
         //$$6
         add(new BarreOutils(this), "North");
         setMenuBar(new BarreMenu(this));
         setVisible(true);
-        setFocusable(true);
-        requestFocus();
-        zd.addKeyListener(new ControlClavier(this));
         Graphics gx = zd.getGraphics();
         dessineFigs(gx);
     }
@@ -164,7 +161,6 @@ public class FenetAffiche extends Frame {
                 }
                 current.dessineToi(g);
             }
-            //oldSave = new ArrayList(save);
             save.clear();
             zd.removeMouseMotionListener(motionListener);
         } else if (save.isEmpty()) {
@@ -225,6 +221,7 @@ public class FenetAffiche extends Frame {
         Graphics g = zd.getGraphics();
         Point_2D vect = new Point_2D(Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
         if (!save.isEmpty()) {
+            trie();
             for (FigureGraphique current : save) {
                 if (save.size() == 1) {
                     current.deplace(x, y);
@@ -240,7 +237,6 @@ public class FenetAffiche extends Frame {
             } else {
                 /*g.drawRect(xEnfonce, yEnfonce, x, y);
                 System.out.println("rect" + x + " " + y);*/
-                g.getClip().contains(x, y);
             }
         }
         zd.repaint();
@@ -269,6 +265,16 @@ public class FenetAffiche extends Frame {
                 new FenetDialogues(this, nom);
                 break;
         }
+    }
+
+    private void trie() {
+        Vector<FigureGraphique> temp = new Vector<FigureGraphique>(figs);
+        for (FigureGraphique current: save) {
+            temp.remove(current);
+        }
+        figs.clear();
+        figs.addAll(0, temp);
+        figs.addAll(temp.size(), save);
     }
 
     /**

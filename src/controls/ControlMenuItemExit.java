@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package controls;
 
 import fenetres.FenetAffiche;
@@ -17,13 +16,17 @@ import java.awt.event.ActionListener;
 public class ControlMenuItemExit implements ActionListener {
 
     private FenetAffiche frame;
-    public ControlMenuItemExit (FenetAffiche frame) {
-        this.frame = frame;
-    };
 
-    public void actionPerformed(ActionEvent e) {
-        FenetDialogues fd = new FenetDialogues(frame);
-        System.exit(0);
+    public ControlMenuItemExit(FenetAffiche frame) {
+        this.frame = frame;
     }
 
+    ;
+
+    public void actionPerformed(ActionEvent e) {
+        if (!frame.getFigs().isEmpty()) {
+            FenetDialogues fd = new FenetDialogues(frame);
+            System.exit(0);
+        }
+    }
 }

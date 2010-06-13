@@ -18,5 +18,6 @@ class TestFenetAffiche {
 		 Cercle c1 = new Cercle("c1",Color.green, Color.yellow, 215,170,50);
 		 vec.addElement(c1);
 		 new FenetAffiche(vec);
+
 	}
 }

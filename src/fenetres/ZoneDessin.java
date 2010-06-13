@@ -1,23 +1,33 @@
 package fenetres;
 
+import controls.ControlClavier;
 import gestions.GestionBoutonsSouris;
 import java.awt.*;
-public class ZoneDessin extends Canvas	{
-	private int xinit, yinit;
-	private int x=20,y=20,width=20,height=20;
-	private Color color = Color.black;
-	private FenetAffiche frame;
+import java.awt.image.BufferStrategy;
 
-	public ZoneDessin(FenetAffiche frame)	{
-		this.frame = frame;
-		setBackground(Color.white);
-		//$$3   
-		addMouseListener(new GestionBoutonsSouris(frame));
-	}
+public class ZoneDessin extends Canvas {
 
-	public void paint (Graphics g) {
-	//$$2
-		frame.dessineFigs(g);
-	}
+    private int xinit, yinit;
+    private int x = 20, y = 20, width = 20, height = 20;
+    private Color color = Color.black;
+    private FenetAffiche frame;
+    private BufferStrategy strategy;
 
+    public ZoneDessin(FenetAffiche frame) {
+        this.frame = frame;
+        setBackground(Color.white);
+        //$$3
+        addMouseListener(new GestionBoutonsSouris(frame));
+        addKeyListener(new ControlClavier(frame));
+        setFocusable(true);
+        requestFocus();
+    }
+
+    public void paint(Graphics g) {
+        //$$2
+        /*strategy = getBufferStrategy();
+        Graphics gr = strategy.getDrawGraphics();*/
+        frame.dessineFigs(g);
+        //Sstrategy.show();
+    }
 }
