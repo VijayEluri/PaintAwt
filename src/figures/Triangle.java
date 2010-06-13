@@ -19,6 +19,9 @@ public class Triangle extends FigureGraphique implements Serializable {
     protected Point_2D[] points;
     protected Point_2D centre = new Point_2D();
     public static int nbTri = 0;
+    // Variable stockant la position des sommets de triangle par rapport au centre
+    // Elle permet de faciliter les fonctions de déplacement
+    protected List<Point_2D> posPoints = new ArrayList();
 
     public Triangle() {
         super();
@@ -29,6 +32,26 @@ public class Triangle extends FigureGraphique implements Serializable {
         this.points = points;
         centre.x = (points[0].x + points[1].x + points[2].x) / 3;
         centre.y = (points[0].y + points[1].y + points[2].y) / 3;
+
+        for (int i = 0; i < 3; i++) {
+            posPoints.add(new Point_2D(centre.getX() - points[i].getX(), centre.getY() - points[i].getY()));
+        }
+        nbTri += 1;
+    }
+
+    
+    public Triangle(ArrayList<Point_2D> listePoints) {
+        super();
+        this.points = new Point_2D[3];
+        for (int i = 0; i < 3; i++) {
+            points[i] = listePoints.get(i);
+        }
+        centre.x = (points[0].x + points[1].x + points[2].x) / 3;
+        centre.y = (points[0].y + points[1].y + points[2].y) / 3;
+
+        for (int i = 0; i < 3; i++) {
+            posPoints.add(new Point_2D(centre.getX() - points[i].getX(), centre.getY() - points[i].getY()));
+        }
         nbTri += 1;
     }
 
@@ -74,11 +97,6 @@ public class Triangle extends FigureGraphique implements Serializable {
 
     @Override
     public void deplace(int dx, int dy) {
-        List<Point_2D> posPoints = new ArrayList();
-
-        for (int i = 0; i < 3; i++) {
-            posPoints.add(new Point_2D(centre.getX() - points[i].getX(), centre.getY() - points[i].getY()));
-        }
         centre.deplace(dx, dy);
         for (int i = 0; i < 3; i++) {
             points[i].deplace(centre.getX() - posPoints.get(i).getX(), centre.getY() - posPoints.get(i).getY());
@@ -86,17 +104,15 @@ public class Triangle extends FigureGraphique implements Serializable {
     }
 
     public void translate(Point_2D p) {
-        centre.x = centre.x + p.x;
-        centre.y = centre.y + p.y;
+        centre.setX(centre.getX() + p.getX());
+        centre.setY(centre.getY() + p.getY());
         for (int i = 0; i < 3; i++) {
-            points[i].setX(points[i].getX() + p.x);
-            points[i].setY(points[i].getY() + p.y);
+            points[i].deplace(centre.getX() - posPoints.get(i).getX(), centre.getY() - posPoints.get(i).getY());
         }
-        System.out.println(points[0].getX() + ' ' + points[0].getY());
     }
 
     // Pour faciliter les calculs dans la fonction contient, on passe par une fonction intermédiaire
-    public int calcPosition(Point_2D s1, Point_2D s2, Point_2D pos) {
+    private int calcPosition(Point_2D s1, Point_2D s2, Point_2D pos) {
         return s1.getX() * (s2.getY() - pos.getY()) + s2.getX() * (pos.getY() - s1.getY()) + pos.getX() * (s1.getY() - s2.getY());
     }
 

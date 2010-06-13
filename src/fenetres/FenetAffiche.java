@@ -198,11 +198,11 @@ public class FenetAffiche extends Frame {
             } else {
                 if (saisie == false && listePoints.size() >= 3) {
                     saisirNom(4);
-                    Point_2D[] points = new Point_2D[listePoints.size()];
-                    for (int i = 0; i < listePoints.size(); i++) {
-                        points[i] = listePoints.get(i);
-                    }
-                    Polygone polygone = new Polygone(nom, couranteCol, couranteFgCol, points, listePoints.size());
+//                    Point_2D[] points = new Point_2D[listePoints.size()];
+//                    for (int i = 0; i < listePoints.size(); i++) {
+//                        points[i] = listePoints.get(i);
+//                    }
+                    Polygone polygone = new Polygone(nom, couranteCol, couranteFgCol, listePoints, listePoints.size());
                     polygone.dessineToi(g);
                     figs.add(polygone);
                     listePoints = new ArrayList();
@@ -230,6 +230,7 @@ public class FenetAffiche extends Frame {
                 }
                 current.dessineToi(g);
             }
+            listePoints = new ArrayList();
         } else {
             if (choice.compareTo("cercle") == 0) {
                 g.drawOval(xEnfonce, yEnfonce, Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
