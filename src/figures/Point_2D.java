@@ -69,6 +69,7 @@ public class Point_2D implements Serializable {
     // toString est une m�thode classique en Java, elle est pr�sente
     // dans les objets de type Object, on pourra dinc ainsi l'utiliser
     // dans une �ventuelle Liste de points.
+    @Override
     public String toString() {
         return new String(" x = " + getX() + " y = " + getY());
     }
@@ -77,8 +78,8 @@ public class Point_2D implements Serializable {
      * op�rations sur un point
      */
     public void deplace(int dx, int dy) {
-        this.x = dx;
-        this.y = dy;
+        this.setX(dx);
+        this.setY(dy);
     }
 
     /**
@@ -89,8 +90,8 @@ public class Point_2D implements Serializable {
         // utilise des m�thodes statiques
         // de l'objet Math : sqrt
 
-        int dx = p1.x - p2.x;
-        int dy = p1.y - p2.y;
+        int dx = p1.getX() - p2.getX();
+        int dy = p1.getY() - p2.getY();
 
         return Math.sqrt((dx * dx) + (dy * dy));
     }
@@ -100,8 +101,8 @@ public class Point_2D implements Serializable {
         // utilise des m�thodes statiques
         // de l'objet Math : sqrt
 
-        int dx = x - p.x;
-        int dy = y - p.y;
+        int dx = x - p.getX();
+        int dy = y - p.getY();
 
         return ((int) Math.sqrt((dx * dx) + (dy * dy)));
     }
