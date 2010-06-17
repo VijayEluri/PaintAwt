@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 public abstract class FigureGraphique implements Figure,Serializable {
 	Color cc, cr;
-	String nom;
+	public String nom;
 	
 	public FigureGraphique() {}
 	public FigureGraphique (String nom, Color cc, Color cr)	{

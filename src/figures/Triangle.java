@@ -40,14 +40,14 @@ public class Triangle extends FigureGraphique implements Serializable {
     }
 
     
-    public Triangle(ArrayList<Point_2D> listePoints) {
-        super();
+    public Triangle(ArrayList<Point_2D> listePoints, Color pCc, String nom, Color pCr) {
+        super(nom, pCc, pCr);
         this.points = new Point_2D[3];
         for (int i = 0; i < 3; i++) {
             points[i] = listePoints.get(i);
         }
-        centre.x = (points[0].x + points[1].x + points[2].x) / 3;
-        centre.y = (points[0].y + points[1].y + points[2].y) / 3;
+        centre.setX((points[0].getX() + points[1].getX() + points[2].getX()) / 3);
+        centre.setY((points[0].getY() + points[1].getY() + points[2].getY()) / 3);
 
         for (int i = 0; i < 3; i++) {
             posPoints.add(new Point_2D(centre.getX() - points[i].getX(), centre.getY() - points[i].getY()));
@@ -58,7 +58,7 @@ public class Triangle extends FigureGraphique implements Serializable {
     public int[] getYTab() {
         int res[] = new int[3];
         for (int i = 0; i < 3; i++) {
-            res[i] = points[i].y;
+            res[i] = points[i].getY();
         }
         return res;
     }
@@ -66,9 +66,13 @@ public class Triangle extends FigureGraphique implements Serializable {
     public int[] getXTab() {
         int[] res = new int[3];
         for (int i = 0; i < 3; i++) {
-            res[i] = points[i].x;
+            res[i] = points[i].getX();
         }
         return res;
+    }
+
+    public void setCc(Color pCc) {
+        this.cr = pCc;
     }
 
     @Override
