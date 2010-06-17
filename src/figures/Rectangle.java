@@ -1,7 +1,6 @@
 package figures;
 
 import java.awt.*;
-import java.io.Serializable;
 
 public class Rectangle extends FigureGraphique {
 
@@ -66,8 +65,8 @@ public class Rectangle extends FigureGraphique {
     public void translate(Point_2D p) {
         centre.x = centre.x + p.x;
         centre.y = centre.y + p.y;
-        pgh.setX(centre.getX() - (this.getlarg() / 2));
-        pgh.setY(centre.getY() - (this.gethaut() / 2));
+        //pgh.setX(centre.getX() - (this.getlarg() / 2));
+        //pgh.setY(centre.getY() - (this.gethaut() / 2));
     }
 
     /**

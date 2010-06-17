@@ -21,12 +21,10 @@ public class ControlMenuItemExit implements ActionListener {
         this.frame = frame;
     }
 
-    ;
-
     public void actionPerformed(ActionEvent e) {
         if (!frame.getFigs().isEmpty()) {
             FenetDialogues fd = new FenetDialogues(frame);
-            System.exit(0);
         }
+        System.exit(0);
     }
 }

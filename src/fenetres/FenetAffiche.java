@@ -1,5 +1,6 @@
 package fenetres;
 
+import exceptions.PolygoneConcave;
 import gestions.GestionDeplacementSouris;
 import figures.Point_2D;
 import figures.FigureGraphique;
@@ -202,9 +203,16 @@ public class FenetAffiche extends Frame {
 //                    for (int i = 0; i < listePoints.size(); i++) {
 //                        points[i] = listePoints.get(i);
 //                    }
-                    Polygone polygone = new Polygone(nom, couranteCol, couranteFgCol, listePoints, listePoints.size());
-                    polygone.dessineToi(g);
-                    figs.add(polygone);
+                    Polygone polygone;
+                    try {
+                        polygone = new Polygone(nom, couranteCol, couranteFgCol, listePoints, listePoints.size());
+                        polygone.dessineToi(g);
+                        figs.add(polygone);
+                    } catch (PolygoneConcave ex) {
+                        //TODO: afficher une fenetre de pop-up avec le message d'erreur.
+                        new FenetDialogues(this, ex);
+                       
+                    }
                     listePoints = new ArrayList();
                 }
             }
@@ -219,16 +227,24 @@ public class FenetAffiche extends Frame {
      */
     public void boutonSourisDeplace(int x, int y) {
         Graphics g = zd.getGraphics();
-        Point_2D vect = new Point_2D(Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
+        //Point_2D vect = new Point_2D(Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
+        
         if (!save.isEmpty()) {
             trie();
             for (FigureGraphique current : save) {
                 if (save.size() == 1) {
                     current.deplace(x, y);
                 } else {
-                    current.translate(vect);
+                    //TODO:faire une translation mutliple qui contient la route!!! (c'est ta mère l'autoroute !)
+                    //current.translate(vect);
+                     Point_2D diffr = new Point_2D(Math.abs(save.get(save.size()-1).getCentre().x - xEnfonce), Math.abs(save.get(save.size() - 1).getCentre().y - yEnfonce));
+                    current.translate(diffr);
                 }
                 current.dessineToi(g);
+            }
+            if (save.size() > 1) {
+                xEnfonce = save.get(0).getCentre().x;
+                yEnfonce = save.get(0).getCentre().x;
             }
             listePoints = new ArrayList();
         } else {

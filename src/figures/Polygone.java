@@ -4,6 +4,7 @@
  */
 package figures;
 
+import exceptions.PolygoneConcave;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.io.Serializable;
@@ -14,7 +15,7 @@ import java.util.List;
  *30 mai 2010
  * @author agindre
  */
-public class Polygone extends FigureGraphique implements Serializable {
+public class Polygone extends FigureGraphique {
 
     protected List<Point_2D> points = new ArrayList();
     protected Point_2D centre = new Point_2D();
@@ -29,7 +30,7 @@ public class Polygone extends FigureGraphique implements Serializable {
         super();
     }
 
-    public Polygone(String nom, Color cc, Color cr, ArrayList<Point_2D> points, int nbPoints) {
+    public Polygone(String nom, Color cc, Color cr, ArrayList<Point_2D> points, int nbPoints) throws PolygoneConcave {
         super(nom, cc, cr);
         this.points = points;
         this.nbPoints = nbPoints;
@@ -50,8 +51,7 @@ public class Polygone extends FigureGraphique implements Serializable {
         for (Point_2D currentPt : points) {
             for (Triangle currentTr : ssTriangle) {
                 if (currentTr.contient(currentPt)) {
-                    // TODO: Gérer l'exception des polygones concaves (c'toi le con dans la cave)
-                    break;
+                    throw new PolygoneConcave();
                 }
             }
         }

@@ -1,7 +1,6 @@
 package figures;
 
 import java.awt.*;
-import java.io.Serializable;
 
 public class Cercle extends FigureGraphique {
 

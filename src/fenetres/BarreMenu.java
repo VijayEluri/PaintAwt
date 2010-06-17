@@ -24,6 +24,7 @@ public class BarreMenu extends MenuBar {
     public BarreMenu(FenetAffiche frame) {
 
         Menu menuFichier = new Menu("Fichier");
+        // TODO: remplir les sous menu de Aide
         Menu menuAide = new Menu("Aide");
 
         menuItemNouveau = new MenuItem("Nouveau");

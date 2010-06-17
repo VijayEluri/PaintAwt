@@ -4,6 +4,12 @@
  */
 package fenetres;
 
+import exceptions.FileSecurity;
+import exceptions.FilesCorrupted;
+import exceptions.FilesNull;
+import java.awt.PopupMenu;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import toolkit.LoadSave;
 
@@ -13,11 +19,10 @@ import toolkit.LoadSave;
  */
 public class FenetDialogues {
 
-    private FenetAffiche frame;
     private Object[] options = {"Oui", "Non"};
+    private Object[] optionsErreur = {"OK"};
 
     public FenetDialogues(FenetAffiche frame) {
-        this.frame = frame;
         int n = JOptionPane.showOptionDialog(frame,
                 "Vous allez perdre tout ce qui n'est pas sauvegardé \n"
                 + "Voulez-vous sauvegarder?",
@@ -30,13 +35,20 @@ public class FenetDialogues {
 
         if (n == 0) {
             LoadSave ls = new LoadSave(frame);
-            ls.save();
+            try {
+                ls.save();
+            } catch (FileSecurity ex) {
+                new FenetDialogues(frame, ex);
+            } catch (FilesNull ex) {
+                new FenetDialogues(frame, ex);
+            } catch (FilesCorrupted ex) {
+                new FenetDialogues(frame, ex);
+            }
         }
 
     }
 
     public FenetDialogues(FenetAffiche frame, String nom) {
-        this.frame = frame;
         String s = (String) JOptionPane.showInputDialog(
                 frame,
                 "Veillez entrer le nom de la figure",
@@ -47,5 +59,16 @@ public class FenetDialogues {
         if ((s != null) && (s.length() > 0)) {
             frame.nom = s;
         }
+    }
+
+    public FenetDialogues(FenetAffiche frame, Exception ex) {
+         JOptionPane.showOptionDialog(frame,
+                ex.toString(),
+                "Erreur !",
+                JOptionPane.ERROR_MESSAGE,
+                JOptionPane.ERROR_MESSAGE,
+                null,
+                optionsErreur,
+                optionsErreur[0]);
     }
 }
