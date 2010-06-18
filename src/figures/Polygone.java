@@ -31,7 +31,7 @@ public class Polygone extends FigureGraphique {
     }
 
     public Polygone(String nom, Color cc, Color cr, ArrayList<Point_2D> points, int nbPoints) throws PolygoneConcave {
-        super(nom, cc, cr);
+        super(nom, cc, cr, new Point_2D());
         this.points = points;
         this.nbPoints = nbPoints;
         for (Point_2D current : points) {
@@ -40,21 +40,15 @@ public class Polygone extends FigureGraphique {
         }
         centre.x = centre.x / nbPoints;
         centre.y = centre.y / nbPoints;
+        saveCentre =  new Point_2D(centre);
         nbPoly += 1;
         for (Point_2D current : points) {
             posPoints.add(new Point_2D(centre.getX() - current.getX(), centre.getY() - current.getY()));
         }
-        // TODO: Mettre la boucle for dans la fonction setSsTriangle ???
-        for (Point_2D current : points) {
-            setSsTriangle(current);
+        if (this.estConcave()) {
+            throw new PolygoneConcave();
         }
-        for (Point_2D currentPt : points) {
-            for (Triangle currentTr : ssTriangle) {
-                if (currentTr.contient(currentPt)) {
-                    throw new PolygoneConcave();
-                }
-            }
-        }
+
         setSsTriangles();
     }
 
@@ -86,7 +80,7 @@ public class Polygone extends FigureGraphique {
         g.drawPolygon(getXTab(), getYTab(), nbPoints);
         // afficher le nom de la figure a partir de son centre
         g.drawString(nom, getCentre().getX(), getCentre().getY());
-        for (Triangle current: ssTriangles) {
+        for (Triangle current : ssTriangles) {
             current.dessineToi(g);
         }
     }
@@ -109,9 +103,10 @@ public class Polygone extends FigureGraphique {
 
         // TODO: Attention, méthode de tchétchène, c'est dégueulasse, c'est crade, c'est bourrin, mais ça marche
         centre.deplace(dx, dy);
+        saveCentre = new Point_2D(centre);
         for (int i = 0; i < nbPoints; i++) {
             points.get(i).deplace(centre.getX() - posPoints.get(i).getX(), centre.getY() - posPoints.get(i).getY());
-            for (Triangle current: ssTriangles) {
+            for (Triangle current : ssTriangles) {
                 //dxTriangle = current.getCentre().getX() + dxCentre;
                 //dyTriangle = current.getCentre().getY() + dyCentre;
                 //System.out.println(current.nom + " : dx = " + dxTriangle + ", dy = " + dyTriangle);
@@ -125,8 +120,8 @@ public class Polygone extends FigureGraphique {
     }
 
     public void translate(Point_2D p) {
-        centre.x = centre.x + p.x;
-        centre.y = centre.y + p.y;
+        centre.x = saveCentre.getX() + p.x;
+        centre.y = saveCentre.getY() + p.y;
     }
 
     /**
@@ -142,15 +137,15 @@ public class Polygone extends FigureGraphique {
         boolean flag = false;
         for (Triangle currentTr : ssTriangles) {
             if (currentTr.contient(p)) {
-               flag = true;
-               break;
+                flag = true;
+                break;
             }
         }
         return flag;
     }
 
     private void setSsTriangles() {
-        for (Point_2D current: points) {
+        for (Point_2D current : points) {
             //Point_2D suiv = new Point_2D(points.get((points.indexOf(current) + 1) % nbPoints));
             //Point_2D centrePol = new Point_2D(centre);
             // TODO: Vérifier qu'on puisse pas faire une initialisation de l'ArrayList sans passer par les add
@@ -170,8 +165,8 @@ public class Polygone extends FigureGraphique {
 
         List<Triangle> trigConcave = new ArrayList();
 
-        for (Point_2D current: points) {
-            Point_2D prec = new Point_2D(points.get(((points.indexOf(current) - 1) % nbPoints) == -1 ? nbPoints -1 : (points.indexOf(current) - 1) % nbPoints));
+        for (Point_2D current : points) {
+            Point_2D prec = new Point_2D(points.get(((points.indexOf(current) - 1) % nbPoints) == -1 ? nbPoints - 1 : (points.indexOf(current) - 1) % nbPoints));
             Point_2D suiv = new Point_2D(points.get((points.indexOf(current) + 1) % nbPoints));
             // TODO: Vérifier qu'on puisse pas faire une initialisation de l'ArrayList sans passer par les add
             ArrayList<Point_2D> listPts = new ArrayList();
@@ -184,7 +179,7 @@ public class Polygone extends FigureGraphique {
 
         }
         for (Point_2D currentPt : points) {
-            for (Triangle currentTr: trigConcave) {
+            for (Triangle currentTr : trigConcave) {
                 if (currentTr.contient(currentPt)) {
                     // TODO: Gérer l'exception des polygones concaves (c'toi le con dans la cave)
                     trigConcave.clear();

@@ -53,6 +53,7 @@ public class ControlClavier implements KeyListener {
             }
             frame.zd.repaint();
             frame.save.clear();
+            frame.suppr = true;
         }
     }
 

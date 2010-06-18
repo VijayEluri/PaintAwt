@@ -7,6 +7,7 @@ import figures.FigureGraphique;
 import figures.Cercle;
 import figures.Rectangle;
 import controls.*;
+import exceptions.CreateFigureCancelled;
 import figures.Polygone;
 import figures.Triangle;
 import java.awt.*;
@@ -67,6 +68,7 @@ public class FenetAffiche extends Frame {
      *
      */
     public Boolean suppr = false;
+    private Point_2D diffr = new Point_2D();
     //Le mouseMotionListener pour le pseudo drag and drop
     GestionDeplacementSouris motionListener = new GestionDeplacementSouris(this);
 
@@ -83,7 +85,7 @@ public class FenetAffiche extends Frame {
         couranteFgCol = Color.blue;
         choice = "rectangle";
         figs = vec;
-        add(zd = new ZoneDessin(this), "Center");       
+        add(zd = new ZoneDessin(this), "Center");
         //$$1
         addWindowListener(new ControlFenet(this));
         //$$6
@@ -158,68 +160,68 @@ public class FenetAffiche extends Frame {
                 if (save.size() == 1) {
                     current.deplace(x, y);
                 } else {
-                    current.translate(vect);
+                    current.translate(diffr);
                 }
                 current.dessineToi(g);
             }
             save.clear();
             zd.removeMouseMotionListener(motionListener);
-        } else if (save.isEmpty()) {
+        } else if (save.isEmpty() && suppr != true) {
             g.setColor(couranteCol);
-            if (choice.compareTo("cercle") == 0) {
-                saisirNom(1);
-                //g.drawOval(xEnfonce, yEnfonce, Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
-                //$$5
-                int rayon = Math.min(Math.abs(Math.abs(x - xEnfonce) / 2), Math.abs(y - yEnfonce));
-                Cercle cercle = new Cercle(nom, couranteCol, couranteFgCol, xEnfonce, yEnfonce, rayon);
-                cercle.dessineToi(g);
-                figs.add(cercle);
-                listePoints = new ArrayList();
-            } else if (choice.compareTo("rectangle") == 0) {
-                saisirNom(2);
-                Point_2D p = new Point_2D(Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
-                //g.drawRect(xEnfonce, yEnfonce, p.x, p.y);
-                Rectangle rectangle = new Rectangle(nom, couranteCol, couranteFgCol, xEnfonce, yEnfonce, p.x, p.y);
-                rectangle.dessineToi(g);
-                figs.add(rectangle);
-                listePoints = new ArrayList();
-            } else if (choice.compareTo("triangle") == 0) {
-                if (listePoints.size() == 3) {
-                    saisirNom(3);
-                    Point_2D[] points = new Point_2D[3];
-                    for (int i = 0; i < 3; i++) {
-                        points[i] = listePoints.get(i);
-                    }
-                    Triangle triangle = new Triangle(nom, couranteCol, couranteFgCol, points);
-                    //g.drawPolygon(triangle.getXTab(), triangle.getYTab(), 3);
-                    triangle.dessineToi(g);
-                    figs.add(triangle);
+            try {
+                if (choice.compareTo("cercle") == 0) {
+                    saisirNom(1);
+                    //g.drawOval(xEnfonce, yEnfonce, Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
+                    //$$5
+                    int rayon = Math.min(Math.abs(Math.abs(x - xEnfonce) / 2), Math.abs(y - yEnfonce));
+                    Cercle cercle = new Cercle(nom, couranteCol, couranteFgCol, xEnfonce, yEnfonce, rayon);
+                    cercle.dessineToi(g);
+                    figs.add(cercle);
                     listePoints = new ArrayList();
-                }
-            } else {
-                if (saisie == false && listePoints.size() >= 3) {
-                    saisirNom(4);
-//                    Point_2D[] points = new Point_2D[listePoints.size()];
-//                    for (int i = 0; i < listePoints.size(); i++) {
-//                        points[i] = listePoints.get(i);
-//                    }
-                    Polygone polygone;
-                    try {
-                        polygone = new Polygone(nom, couranteCol, couranteFgCol, listePoints, listePoints.size());
-                        polygone.dessineToi(g);
-                        figs.add(polygone);
-                    } catch (PolygoneConcave ex) {
-                        //TODO: afficher une fenetre de pop-up avec le message d'erreur.
-                        new FenetDialogues(this, ex);
-                       
-                    }
+                } else if (choice.compareTo("rectangle") == 0) {
+                    saisirNom(2);
+                    Point_2D p = new Point_2D(Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
+                    Point_2D pgh = calculeBonSens(x, y);
+                    //g.drawRect(xEnfonce, yEnfonce, p.x, p.y);
+                    Rectangle rectangle = new Rectangle(nom, couranteCol, couranteFgCol, pgh.x, pgh.y, p.x, p.y);
+                    rectangle.dessineToi(g);
+                    figs.add(rectangle);
                     listePoints = new ArrayList();
+                } else if (choice.compareTo("triangle") == 0) {
+                    if (listePoints.size() == 3) {
+                        saisirNom(3);
+                        Point_2D[] points = new Point_2D[3];
+                        for (int i = 0; i < 3; i++) {
+                            points[i] = listePoints.get(i);
+                        }
+                        Triangle triangle = new Triangle(nom, couranteCol, couranteFgCol, points);
+                        //g.drawPolygon(triangle.getXTab(), triangle.getYTab(), 3);
+                        triangle.dessineToi(g);
+                        figs.add(triangle);
+                        listePoints = new ArrayList();
+                    }
+                } else {
+                    if (saisie == false && listePoints.size() >= 3) {
+                        saisirNom(4);
+                        Polygone polygone;
+                        try {
+                            polygone = new Polygone(nom, couranteCol, couranteFgCol, listePoints, listePoints.size());
+                            polygone.dessineToi(g);
+                            figs.add(polygone);
+                        } catch (PolygoneConcave ex) {
+                            new FenetDialogues(this, ex);
+
+                        }
+                        listePoints = new ArrayList();
+                    }
                 }
+                suppr = false;
+            } catch (CreateFigureCancelled e) {
             }
         }
         zd.repaint();
     }
-    
+
     /**
      *
      * @param x
@@ -228,17 +230,21 @@ public class FenetAffiche extends Frame {
     public void boutonSourisDeplace(int x, int y) {
         Graphics g = zd.getGraphics();
         //Point_2D vect = new Point_2D(Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
-        
+
         if (!save.isEmpty()) {
             trie();
             for (FigureGraphique current : save) {
                 if (save.size() == 1) {
                     current.deplace(x, y);
                 } else {
-                    //TODO:faire une translation mutliple qui contient la route!!! (c'est ta mère l'autoroute !)
+                    //TODO:faire une translation mutliple qui tient la route!!! (c'est ta mère l'autoroute !)
                     //current.translate(vect);
-                     Point_2D diffr = new Point_2D(Math.abs(save.get(save.size()-1).getCentre().x - xEnfonce), Math.abs(save.get(save.size() - 1).getCentre().y - yEnfonce));
+                    //Point_2D diffr = new Point_2D(Math.abs(save.get(save.size()-1).getCentre().x - xEnfonce), Math.abs(save.get(save.size() - 1).getCentre().y - yEnfonce));
+                    //current.translate(diffr);
+                    diffr = new Point_2D((x - xEnfonce) / 2, (y - yEnfonce) / 2);
                     current.translate(diffr);
+
+
                 }
                 current.dessineToi(g);
             }
@@ -252,14 +258,14 @@ public class FenetAffiche extends Frame {
                 g.drawOval(xEnfonce, yEnfonce, Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
                 System.out.println("cer" + x + " " + y);
             } else {
-                /*g.drawRect(xEnfonce, yEnfonce, x, y);
-                System.out.println("rect" + x + " " + y);*/
+                g.drawRect(xEnfonce, yEnfonce, x, y);
+                System.out.println("rect" + x + " " + y);
             }
         }
         zd.repaint();
     }
 
-    private void saisirNom(int figure) {
+    private void saisirNom(int figure) throws exceptions.CreateFigureCancelled {
 
         switch (figure) {
             case 1:
@@ -286,12 +292,26 @@ public class FenetAffiche extends Frame {
 
     private void trie() {
         Vector<FigureGraphique> temp = new Vector<FigureGraphique>(figs);
-        for (FigureGraphique current: save) {
+        for (FigureGraphique current : save) {
             temp.remove(current);
         }
         figs.clear();
         figs.addAll(0, temp);
         figs.addAll(temp.size(), save);
+    }
+
+    private Point_2D calculeBonSens(int x, int y) {
+        Point_2D point = new Point_2D(xEnfonce, yEnfonce);
+
+        if (x < xEnfonce) {
+            point = new Point_2D(x, y);
+            if (y > yEnfonce) {
+                point = new Point_2D(x, yEnfonce);
+            }
+        } else if (y < yEnfonce) {
+            point = new Point_2D(xEnfonce, y);
+        }
+        return point;
     }
 
     /**

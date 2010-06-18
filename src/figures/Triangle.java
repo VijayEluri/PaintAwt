@@ -28,11 +28,11 @@ public class Triangle extends FigureGraphique implements Serializable {
     }
 
     public Triangle(String nom, Color cc, Color cr, Point_2D[] points) {
-        super(nom, cc, cr);
+        super(nom, cc, cr, new Point_2D());
         this.points = points;
         centre.x = (points[0].x + points[1].x + points[2].x) / 3;
         centre.y = (points[0].y + points[1].y + points[2].y) / 3;
-
+        saveCentre = new Point_2D(centre);
         for (int i = 0; i < 3; i++) {
             posPoints.add(new Point_2D(centre.getX() - points[i].getX(), centre.getY() - points[i].getY()));
         }
@@ -41,7 +41,7 @@ public class Triangle extends FigureGraphique implements Serializable {
 
     
     public Triangle(ArrayList<Point_2D> listePoints, Color pCc, String nom, Color pCr) {
-        super(nom, pCc, pCr);
+        super(nom, pCc, pCr, new Point_2D());
         this.points = new Point_2D[3];
         for (int i = 0; i < 3; i++) {
             points[i] = listePoints.get(i);
@@ -102,14 +102,15 @@ public class Triangle extends FigureGraphique implements Serializable {
     @Override
     public void deplace(int dx, int dy) {
         centre.deplace(dx, dy);
+        saveCentre = new Point_2D(centre);
         for (int i = 0; i < 3; i++) {
             points[i].deplace(centre.getX() - posPoints.get(i).getX(), centre.getY() - posPoints.get(i).getY());
         }
     }
 
     public void translate(Point_2D p) {
-        centre.setX(centre.getX() + p.getX());
-        centre.setY(centre.getY() + p.getY());
+        centre.x = saveCentre.getX() + p.x;
+        centre.y = saveCentre.getY() + p.y;
         for (int i = 0; i < 3; i++) {
             points[i].deplace(centre.getX() - posPoints.get(i).getX(), centre.getY() - posPoints.get(i).getY());
         }

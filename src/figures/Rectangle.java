@@ -17,11 +17,12 @@ public class Rectangle extends FigureGraphique {
     // constructeur valu� : position + rayon
 
     public Rectangle(String nom, Color cc, Color cr, int x, int y, int larg, int haut) {
-        super(nom, cc, cr);
+        super(nom, cc, cr, new Point_2D());
         pgh = new Point_2D(x, y);
         this.larg = larg;
         this.haut = haut;
         this.centre = new Point_2D(pgh.getX() + (larg) / 2, pgh.getY() + (haut) / 2);
+        saveCentre = new Point_2D(centre);
         nbRect += 1;
     }
 
@@ -58,15 +59,16 @@ public class Rectangle extends FigureGraphique {
      */
     public void deplace(int dx, int dy) {
        centre.deplace(dx, dy);
+       saveCentre = new Point_2D(centre);
        pgh.setX(centre.getX() - (this.getlarg() / 2));
        pgh.setY(centre.getY() - (this.gethaut() / 2));
     }
 
     public void translate(Point_2D p) {
-        centre.x = centre.x + p.x;
-        centre.y = centre.y + p.y;
-        //pgh.setX(centre.getX() - (this.getlarg() / 2));
-        //pgh.setY(centre.getY() - (this.gethaut() / 2));
+        centre.x = saveCentre.x+ p.x;
+        centre.y = saveCentre.y + p.y;
+        pgh.setX(centre.getX() - (this.getlarg() / 2));
+        pgh.setY(centre.getY() - (this.gethaut() / 2));
     }
 
     /**

@@ -6,12 +6,14 @@ import java.io.Serializable;
 public abstract class FigureGraphique implements Figure,Serializable {
 	Color cc, cr;
 	public String nom;
+        protected Point_2D saveCentre;
 	
 	public FigureGraphique() {}
-	public FigureGraphique (String nom, Color cc, Color cr)	{
+	public FigureGraphique (String nom, Color cc, Color cr, Point_2D saveCentre)	{
 		this.cc = cc;	
 		this.cr = cr;	
 		this.nom = nom;
+                this.saveCentre = saveCentre;
 	}
 
 	public Color getcc()

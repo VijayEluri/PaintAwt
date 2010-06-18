@@ -17,8 +17,9 @@ public class Cercle extends FigureGraphique {
 
     // constructeur valu�
     public Cercle(String nom, Color cc, Color cr, int x, int y, int r) {
-        super(nom, cc, cr);
+        super(nom, cc, cr, new Point_2D());
         centre = new Point_2D(x, y);
+        saveCentre = new Point_2D(centre);
         rayon = r;
         nbCercle += 1;
     }
@@ -46,6 +47,7 @@ public class Cercle extends FigureGraphique {
      */
     public void deplace(int dx, int dy) {
         centre.deplace(dx, dy);
+        saveCentre = new Point_2D(centre);
     }
 
     /**
@@ -80,8 +82,8 @@ public class Cercle extends FigureGraphique {
     }
 
     public void translate(Point_2D p) {
-        centre.x = centre.x + p.x;
-        centre.y = centre.y + p.y;
+        centre.x = saveCentre.getX()+ p.x;
+        centre.y = saveCentre.getY() + p.y;
     }
 
     public void setCentre(Point_2D centre) {
