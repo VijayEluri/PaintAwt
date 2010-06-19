@@ -215,10 +215,10 @@ public class FenetAffiche extends Frame {
                         listePoints = new ArrayList();
                     }
                 }
-                suppr = false;
             } catch (CreateFigureCancelled e) {
             }
         }
+        suppr = false;
         zd.repaint();
     }
 
@@ -237,29 +237,27 @@ public class FenetAffiche extends Frame {
                 if (save.size() == 1) {
                     current.deplace(x, y);
                 } else {
-                    //TODO:faire une translation mutliple qui tient la route!!! (c'est ta mère l'autoroute !)
-                    //current.translate(vect);
-                    //Point_2D diffr = new Point_2D(Math.abs(save.get(save.size()-1).getCentre().x - xEnfonce), Math.abs(save.get(save.size() - 1).getCentre().y - yEnfonce));
-                    //current.translate(diffr);
                     diffr = new Point_2D((x - xEnfonce) / 2, (y - yEnfonce) / 2);
                     current.translate(diffr);
-
-
                 }
                 current.dessineToi(g);
             }
             if (save.size() > 1) {
-                xEnfonce = save.get(0).getCentre().x;
-                yEnfonce = save.get(0).getCentre().x;
+                xEnfonce = save.get(save.size() - 1).getCentre().x;
+                yEnfonce = save.get(save.size() - 1).getCentre().x;
             }
             listePoints = new ArrayList();
         } else {
             if (choice.compareTo("cercle") == 0) {
-                g.drawOval(xEnfonce, yEnfonce, Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
-                System.out.println("cer" + x + " " + y);
+                Point_2D p = new Point_2D(Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
+                Point_2D pgh = calculeBonSens(x, y);
+                g.drawOval(pgh.x, pgh.y, p.x, p.y);
+                //System.out.println("cer" + x + " " + y);
             } else {
-                g.drawRect(xEnfonce, yEnfonce, x, y);
-                System.out.println("rect" + x + " " + y);
+                Point_2D p = new Point_2D(Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
+                Point_2D pgh = calculeBonSens(x, y);
+                g.drawRect(pgh.x, pgh.y, p.x, p.y);
+                //System.out.println("rect" + x + " " + y);
             }
         }
         zd.repaint();

@@ -9,7 +9,6 @@ import exceptions.FileSecurity;
 import exceptions.FilesCorrupted;
 import exceptions.FilesNull;
 import javax.swing.JOptionPane;
-import javax.swing.text.html.HTML;
 import toolkit.LoadSave;
 
 /**
@@ -20,7 +19,7 @@ public class FenetDialogues {
 
     private Object[] options = {"Oui", "Non"};
     private Object[] optionsErreur = {"OK"};
-    private String message = new String("PaintAwt v1.0 \n ENSIIE \n Alexandre Gindre - Simon Laubet-Xavier");
+    private String message = new String("\n PaintAwt v1.0 \n \t ENSIIE \n \t Alexandre Gindre - Simon Laubet-Xavier");
 
 
     public FenetDialogues(FenetAffiche frame) {
