@@ -3,15 +3,14 @@ package figures;
 import java.awt.*;
 
 public interface Figure {
-	public abstract double surface();
+    public abstract Point_2D getCentre();
 
-	public abstract Point_2D getCentre();
+    public abstract void deplace(int dx, int dy);
 
-	public abstract void deplace(int dx, int dy);
+    public abstract boolean contient(Point_2D p);
 
-	public abstract boolean contient(Point_2D p);
+    @Override
+    public abstract String toString();
 
-	public abstract String toString();
-
-	public abstract void dessineToi(Graphics gx);
+    public abstract void dessineToi(Graphics gx);
 }	

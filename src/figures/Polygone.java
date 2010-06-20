@@ -1,35 +1,64 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package figures;
 
 import exceptions.PolygoneConcave;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- *30 mai 2010
- * @author agindre
+ * La classe Polygone permet de dessiner dans la fenêtre des polygones
+ * irréguliers convexes. Elle dispose de toutes les méthodes des figures
+ * graphiques.
  */
 public class Polygone extends FigureGraphique {
 
+    /**
+     * Liste des points formant le polygône
+     */
     protected List<Point_2D> points = new ArrayList();
-    protected Point_2D centre = new Point_2D();
+    /**
+     * Entier stockant le nombre de points du polygone.
+     */
     protected int nbPoints;
+    /**
+     * Variable de classe stockant le nombre de polygones créés. Est utile lors
+     * de la création automatique des noms des polygones.
+     */
     public static int nbPoly = 0;
-    // Variable stockant la position des sommets de triangle par rapport au centre
-    // Elle permet de faciliter les fonctions de déplacement
-    protected List<Point_2D> posPoints = new ArrayList();
+    /**
+     * Liste des triangles créés par deux points contigüs du polygone et son
+     * centre. Elle facilite les fonctions de déplacements et de translations
+     */
     protected List<Triangle> ssTriangles = new ArrayList();
+    /**
+     * Variable stockant la position des sommets de triangle par rapport au
+     * centre. Elle permet de faciliter les fonctions de déplacement.
+     */
+    protected List<Point_2D> posPoints = new ArrayList();
 
+    /**
+     * Constructeur par défaut
+     */
     public Polygone() {
         super();
     }
 
+    /**
+     * Constructeur.
+     * Crée un objet polygone à partir de son nom, de ses couleurs (cc et cr),
+     * et de la liste des points formant ce polygone. On vérifie que le polygone
+     * ainsi instancié est concave, auquel cas une exception est générée. Enfin
+     * on crée les triangles composants le polygone, et qui permettront de
+     * vérifier si un point est contenu dans la figure, lors de la fonction de
+     * déplacement.
+     * @param nom String
+     * @param cc Color
+     * @param cr Color
+     * @param points ArrayList<Point_2D>
+     * @param nbPoints int
+     * @throws PolygoneConcave
+     */
     public Polygone(String nom, Color cc, Color cr, ArrayList<Point_2D> points, int nbPoints) throws PolygoneConcave {
         super(nom, cc, cr, new Point_2D());
         this.points = points;
@@ -40,7 +69,6 @@ public class Polygone extends FigureGraphique {
         }
         centre.x = centre.x / nbPoints;
         centre.y = centre.y / nbPoints;
-        saveCentre =  new Point_2D(centre);
         nbPoly += 1;
         for (Point_2D current : points) {
             posPoints.add(new Point_2D(centre.getX() - current.getX(), centre.getY() - current.getY()));
@@ -52,6 +80,10 @@ public class Polygone extends FigureGraphique {
         setSsTriangles();
     }
 
+    /**
+     * Retourne le tableau des ordonnées de tous les sommets du polygone
+     * @return int[]
+     */
     public int[] getYTab() {
         int[] res = new int[nbPoints];
         for (int i = 0; i < nbPoints; i++) {
@@ -60,6 +92,10 @@ public class Polygone extends FigureGraphique {
         return res;
     }
 
+    /**
+     * Retourne le tableau des abscisses de tous les sommets du polygone
+     * @return int[]
+     */
     public int[] getXTab() {
         int[] res = new int[nbPoints];
         for (int i = 0; i < nbPoints; i++) {
@@ -68,69 +104,26 @@ public class Polygone extends FigureGraphique {
         return res;
     }
 
+    /**
+     * Fonction d'affichage du polygone dans la fenêtre d'affichage. Pour
+     * respecter les paramètres, on affiche le polygone plein, de la couleur cr,
+     * puis les contours, et le nom, de la couleur cc.
+     * @param g Graphics
+     */
     @Override
     public void dessineToi(Graphics g) {
-        // installer la couleur de remplissage du polygone
         g.setColor(cr);
-        // dessiner l'interieur du polygone
         g.fillPolygon(getXTab(), getYTab(), nbPoints);
-        // installer la couleur de contour du polygone
         g.setColor(cc);
-        // dessiner le contour du polygone
         g.drawPolygon(getXTab(), getYTab(), nbPoints);
-        // afficher le nom de la figure a partir de son centre
         g.drawString(nom, getCentre().getX(), getCentre().getY());
-        for (Triangle current : ssTriangles) {
-            current.dessineToi(g);
-        }
-    }
-
-    @Override
-    public double surface() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public Point_2D getCentre() {
-        return centre;
-    }
-
-    @Override
-    public void deplace(int dx, int dy) {
-        //int dxCentre = dx - centre.getX();
-        //int dyCentre = dy - centre.getY();
-        //int dxTriangle, dyTriangle;
-
-        // TODO: Attention, méthode de tchétchène, c'est dégueulasse, c'est crade, c'est bourrin, mais ça marche
-        centre.deplace(dx, dy);
-        saveCentre = new Point_2D(centre);
-        for (int i = 0; i < nbPoints; i++) {
-            points.get(i).deplace(centre.getX() - posPoints.get(i).getX(), centre.getY() - posPoints.get(i).getY());
-            for (Triangle current : ssTriangles) {
-                //dxTriangle = current.getCentre().getX() + dxCentre;
-                //dyTriangle = current.getCentre().getY() + dyCentre;
-                //System.out.println(current.nom + " : dx = " + dxTriangle + ", dy = " + dyTriangle);
-                //current.getCentre().deplace(dxTriangle, dyTriangle);
-                //System.out.println(current.nom + " : dx = " + current.getCentre().getX() + ", dy = " + current.getCentre().getY());
-
-                current.getCentre().setX((current.points[0].getX() + current.points[1].getX() + current.points[2].getX()) / 3);
-                current.getCentre().setY((current.points[0].getY() + current.points[1].getY() + current.points[2].getY()) / 3);
-            }
-        }
-    }
-
-    public void translate(Point_2D p) {
-        centre.x = saveCentre.getX() + p.x;
-        centre.y = saveCentre.getY() + p.y;
     }
 
     /**
-     * Fonction contient
-     * @param p
-     * @return un booléen
-     * Indique si un point appartient à un polygone convexe
-     * En cas de polygone concave, un exception est générée
-     * Fonctionnement :
+     * Indique si un point appartient à un polygone convexe. Pour cela, on
+     * vérifie que le point appartient à un des sous-triangles.
+     * @param p Point_2D
+     * @return boolean
      */
     @Override
     public boolean contient(Point_2D p) {
@@ -144,44 +137,86 @@ public class Polygone extends FigureGraphique {
         return flag;
     }
 
+    /**
+     * Fonction de déplacements des polygones, à la position (dx;dy) donnée en
+     * paramètre. On doit également veillé à déplacer les triangles qui le
+     * composent, afin de la fonction contient continue de fonctionner avec les
+     * nouvelles coordonnées du polygone.
+     * @param dx int
+     * @param dy int
+     */
+    @Override
+    public void deplace(int dx, int dy) {
+        centre.deplace(dx, dy);
+        saveCentre = new Point_2D(centre);
+        for (int i = 0; i < nbPoints; i++) {
+            points.get(i).deplace(centre.getX() - posPoints.get(i).getX(), centre.getY() - posPoints.get(i).getY());
+            for (Triangle current : ssTriangles) {
+                current.getCentre().setX((current.points[0].getX() + current.points[1].getX() + current.points[2].getX()) / 3);
+                current.getCentre().setY((current.points[0].getY() + current.points[1].getY() + current.points[2].getY()) / 3);
+            }
+        }
+    }
+
+    /**
+     * Fontion translate, qui permet de déplacer plusieurs objets
+     * FigureGraphique selon les coordonnées d'un vecteur, présenté sous la
+     * forme d'un Point_2D. De même que pour la fonction déplacer, on doit
+     * également déplacer les triangles qui composent de polygone.
+     * @param p Point_2D
+     */
+    public void translate(Point_2D p) {
+        centre.setX(saveCentre.getX() + p.getX());
+        centre.setY(saveCentre.getY() + p.getY());
+        for (int i = 0; i < nbPoints; i++) {
+            points.get(i).deplace(centre.getX() - posPoints.get(i).getX(), centre.getY() - posPoints.get(i).getY());
+            for (Triangle current : ssTriangles) {
+                current.getCentre().setX((current.points[0].getX() + current.points[1].getX() + current.points[2].getX()) / 3);
+                current.getCentre().setY((current.points[0].getY() + current.points[1].getY() + current.points[2].getY()) / 3);
+            }
+        }
+    }
+
+    /**
+     * Fonction interne qui définit les sous-triangles utilisés pour les
+     * fonctions de déplacement et de translations
+     */
     private void setSsTriangles() {
         for (Point_2D current : points) {
-            //Point_2D suiv = new Point_2D(points.get((points.indexOf(current) + 1) % nbPoints));
-            //Point_2D centrePol = new Point_2D(centre);
-            // TODO: Vérifier qu'on puisse pas faire une initialisation de l'ArrayList sans passer par les add
             ArrayList<Point_2D> listPts = new ArrayList();
-            // On initialise un nouveau point pour ne pas utiliser une référence de current
             listPts.add(current);
             listPts.add(points.get((points.indexOf(current) + 1) % nbPoints));
             listPts.add(centre);
 
-            Triangle testTriangle = new Triangle(listPts, Color.RED, "Test", Color.WHITE);
+            Triangle testTriangle = new Triangle(listPts);
             ssTriangles.add(testTriangle);
         }
     }
 
+    /**
+     * Fonction interne qui permet de vérifier qu'un triangle est concave, en
+     * testant, pour chaque sommet, s'il n'est pas inclus dans le triangle
+     * composé du sommet suivant, du sommet précédent, et du centre du polygone.
+     * @return boolean
+     */
     private boolean estConcave() {
-        //TODO: Cette méthode de vérification ne marche pas à 100%. En cas de polygône qui a deux segments qui se croisent (cf |><|), ça marche pas
-
         List<Triangle> trigConcave = new ArrayList();
 
         for (Point_2D current : points) {
             Point_2D prec = new Point_2D(points.get(((points.indexOf(current) - 1) % nbPoints) == -1 ? nbPoints - 1 : (points.indexOf(current) - 1) % nbPoints));
             Point_2D suiv = new Point_2D(points.get((points.indexOf(current) + 1) % nbPoints));
-            // TODO: Vérifier qu'on puisse pas faire une initialisation de l'ArrayList sans passer par les add
             ArrayList<Point_2D> listPts = new ArrayList();
             listPts.add(prec);
             listPts.add(suiv);
             listPts.add(centre);
 
-            Triangle testTriangle = new Triangle(listPts, Color.RED, "Test", Color.WHITE);
+            Triangle testTriangle = new Triangle(listPts);
             trigConcave.add(testTriangle);
 
         }
         for (Point_2D currentPt : points) {
             for (Triangle currentTr : trigConcave) {
                 if (currentTr.contient(currentPt)) {
-                    // TODO: Gérer l'exception des polygones concaves (c'toi le con dans la cave)
                     trigConcave.clear();
                     return true;
                 }
