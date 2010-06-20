@@ -1,16 +1,14 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package exceptions;
 
 /**
- *13 juin 2010
- * @author agindre
+ * Class représentant les exceptions dû à la concavité d'un polygone
  */
 public class PolygoneConcave extends Exception {
 
+    /**
+     * Méthode permettant l'envoie d'une notification à l'utlisateur
+     * @return String
+     */
     public String toString() {
         return new String("Erreur: le polygone est concave!");
     }

@@ -8,9 +8,9 @@ import java.awt.MenuBar;
 import java.awt.MenuItem;
 import controls.ControlMenuItemExit;
 import controls.ControlMenuItemSave;
+
 /**
- *
- * @author grimm
+ * Class qui gère la création et la mise en place du menu de l'application
  */
 public class BarreMenu extends MenuBar {
 
@@ -20,8 +20,12 @@ public class BarreMenu extends MenuBar {
     private MenuItem menuItemSauvegarde;
     private MenuItem menuItemCharger;
     private MenuItem menuItemAPropos;
-    private MenuItem menuItemAide;
 
+    /**
+     * Constructeur de class, prend en paramètre la FenetAffiche à qui on va
+     * associer la barre de menu
+     * @param frame FenetAffiche
+     */
     public BarreMenu(FenetAffiche frame) {
 
         Menu menuFichier = new Menu("Fichier");
@@ -30,12 +34,11 @@ public class BarreMenu extends MenuBar {
 
         menuItemNouveau = new MenuItem("Nouveau");
         menuItemQuitter = new MenuItem("Quitter");
-        menuItemSauvegarde = new MenuItem("Sauvegarde");
+        menuItemSauvegarde = new MenuItem("Sauvegarder");
         menuItemCharger = new MenuItem("Charger");
         menuItemAPropos = new MenuItem("À propose");
-        menuItemAide = new MenuItem("Aide");
 
-        //Ajout de actionListener à faire sur les menuItemNouveau
+        //Ajout de actionListener pour chacun des item
         menuItemQuitter.addActionListener(new ControlMenuItemExit(frame));
         menuItemSauvegarde.addActionListener(new ControlMenuItemSave(frame));
         menuItemCharger.addActionListener(new ControlMenuItemLoad(frame));
@@ -47,7 +50,6 @@ public class BarreMenu extends MenuBar {
         menuFichier.add(menuItemCharger);
         menuFichier.add(menuItemQuitter);
 
-        menuAide.add(menuItemAide);
         menuAide.add(menuItemAPropos);
 
         add(menuFichier);

@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package controls;
 
 import fenetres.FenetAffiche;
@@ -12,24 +7,28 @@ import java.awt.event.KeyListener;
 import java.util.Vector;
 
 /**
- *3 juin 2010
- * @author agindre
+ * Class chargée de la gestion des touches clavier
+ * comme la suppression (suppr) ou choix mutliple (ctrl)
  */
 public class ControlClavier implements KeyListener {
 
+    /**
+     * Variable contenant la FenetAffiche associée au controleur
+     */
     private FenetAffiche frame;
 
     /**
-     *
-     * @param frame
+     * Contructeur de la class ControlClavier
+     * @param frame FenetAffiche
+     * on passe en paramètre la FenetAffiche associée au controleur
      */
     public ControlClavier(FenetAffiche frame) {
         this.frame = frame;
     }
 
     /**
-     *
-     * @param ke
+     * Méthode non implementée
+     * @param ke KeyEvent
      */
     @Override
     public void keyTyped(KeyEvent ke) {
@@ -37,15 +36,18 @@ public class ControlClavier implements KeyListener {
     }
 
     /**
-     * Giga de la mort qui tue sa mère
+     * Méthode appelée lors qu'une touche est pressée.
+     * Prend en paramètre le KeyEvent générer par la pression de la touche
      * @param ke KeyEvent
      */
     @Override
     public void keyPressed(KeyEvent ke) {
+        //si la touche pressée est la touche ctrl
         if (ke.getKeyCode() == KeyEvent.VK_CONTROL) {
             frame.saisie = true;
         }
 
+        //si la touche pressée est la touche suppr
         if (ke.getKeyCode() == KeyEvent.VK_DELETE) {
             Vector<FigureGraphique> figs = frame.getFigs();
             for (FigureGraphique current : frame.save) {
@@ -58,12 +60,11 @@ public class ControlClavier implements KeyListener {
     }
 
     /**
-     *
-     * @param ke
+     * Méthode appelée lors du relachement de la touche précedement pressée
+     * @param ke KeyEvent
      */
     @Override
     public void keyReleased(KeyEvent ke) {
-        //row new UnsupportedOperationException("Not supported yet.");
         frame.saisie = false;
     }
 

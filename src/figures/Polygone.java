@@ -7,7 +7,6 @@ package figures;
 import exceptions.PolygoneConcave;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

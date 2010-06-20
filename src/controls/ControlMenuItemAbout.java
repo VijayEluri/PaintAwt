@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package controls;
 
 import fenetres.FenetAffiche;
@@ -11,17 +6,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- *18 juin 2010
- * @author agindre
+ * Class chargée de l'interaction avec le menu About
  */
 public class ControlMenuItemAbout implements ActionListener {
 
-     private FenetAffiche frame;
+    /**
+     * Variable contenant la FenetAffiche associée
+     */
+    private FenetAffiche frame;
 
+    /**
+     * Constructeur de la classe, prend en paramètre le FenetAffiche associée
+     * @param frame
+     */
     public ControlMenuItemAbout(FenetAffiche frame) {
         this.frame = frame;
     }
 
+    /**
+     * Méthode appelée lorsque l'utlisateur clique sur About
+     * @param e ActionEvent
+     */
     public void actionPerformed(ActionEvent e) {
         new FenetDialogues(frame, 1);
     }

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package fenetres;
 
 import exceptions.CreateFigureCancelled;
@@ -12,16 +8,24 @@ import javax.swing.JOptionPane;
 import toolkit.LoadSave;
 
 /**
- *4 juin 2010
- * @author agindre
+ * Class quo gère les différentes fenêtre de dialogue utilisées dans l'application
  */
 public class FenetDialogues {
 
+    /**
+     * Initialisation des variables utilisées dans les différentes
+     * fenêtres de dialogue
+     */
     private Object[] options = {"Oui", "Non"};
     private Object[] optionsErreur = {"OK"};
     private String message = new String("\n PaintAwt v1.0 \n \t ENSIIE \n \t Alexandre Gindre - Simon Laubet-Xavier");
 
-
+    /**
+     * Constructeur de class, prend en paramètre la FenetAffiche associée
+     * On fait appel à ce constructeur pour la création de la fenêtre de dialogue
+     * pour la proposition de sauvegarde
+     * @param frame
+     */
     public FenetDialogues(FenetAffiche frame) {
         int n = JOptionPane.showOptionDialog(frame,
                 "Vous allez perdre tout ce qui n'est pas sauvegardé \n"
@@ -48,6 +52,15 @@ public class FenetDialogues {
 
     }
 
+    /**
+     * Constructeur de class, prend en paramètre la FenetAffiche associée et le
+     * nom par défaut de la figure courante.
+     * On utilise ce constructeur pour la fenetre de dialogue lors de la
+     * création de figure
+     * @param frame FenetAffiche
+     * @param nom String
+     * @throws CreateFigureCancelled
+     */
     public FenetDialogues(FenetAffiche frame, String nom) throws CreateFigureCancelled {
         String s = (String) JOptionPane.showInputDialog(
                 frame,
@@ -63,6 +76,13 @@ public class FenetDialogues {
         }
     }
 
+    /**
+     * Constructeur de class, prend en paramètre la FenetAffiche associée et
+     * l'exception à afficher.
+     * On utilise ce constructeur pour l'affichage des exceptions.
+     * @param frame FenetAffiche
+     * @param ex Exception
+     */
     public FenetDialogues(FenetAffiche frame, Exception ex) {
         JOptionPane.showOptionDialog(frame,
                 ex.toString(),
@@ -74,6 +94,13 @@ public class FenetDialogues {
                 optionsErreur[0]);
     }
 
+    /**
+     * Constructeur de class, prend en paramètre la FenetAffiche associée et
+     * le type de message.
+     * On utilise ce constructeur pour la fenetre de dialogue A propos
+     * @param frame FenetAffiche
+     * @param type int
+     */
     public FenetDialogues(FenetAffiche frame, int type) {
         JOptionPane.showMessageDialog(frame, message, "À propos", JOptionPane.PLAIN_MESSAGE);
     }

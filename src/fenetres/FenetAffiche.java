@@ -15,66 +15,65 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 /**
- *
- * @author grimm
+ * Class principale de l'application, elle s'occupe de faire l'appel aux
+ * différentes classes composants l'application
+ * 
  */
 public class FenetAffiche extends Frame {
 
     /**
-     *
+     * Variable contenant la ZoneDessin de l'application
      */
     public ZoneDessin zd;
     /**
-     *
+     * Variable contenant le Graphics associée à la ZoneDessin zd
      */
     public Graphics gx;
+    // Variable contenant toutes figures déjà déssinées
     private Vector<FigureGraphique> figs;
+    // Variables contenant les coordonnées du point cliqué par l'utilisateur
     private int xEnfonce, yEnfonce;
+    // Variable contenant les points cliqués consécutivement par l'utilisateur
     private ArrayList<Point_2D> listePoints = new ArrayList();
     /**
-     *
+     * Variable contenant la couleur courante
      */
     public Color couranteCol;
     /**
-     *
+     * Variable contenant la couleur de fond courante
      */
     public Color couranteFgCol;
-    //Variable de sauvegarde de la figure sélectionnée
     /**
-     *
+     * Variable contenant la liste des figures sélectionnées par l'utilisateur
      */
     public ArrayList<FigureGraphique> save = new ArrayList();
     /**
-     *
-     */
-    public ArrayList<FigureGraphique> oldSave;
-    //Variable pour stocker le type de dessin à produire
-    /**
-     *
+     * Variable contenant le type de forme sélectionné
      */
     public String choice;
-    //connaitre si l'utilisateur en à fini avec la sasie des points du polynome (touche ctrl enfoncé quoi)
     /**
-     *
+     * Variable utilisé pour savoir si l'utilisateur fait de la sélection mutliple
      */
     public Boolean saisie = false;
-    //nom courant de la figure
     /**
-     * 
+     * Variable contenant la nom de la figure 
      */
     public String nom = null;
-    //savoir si la suppression est prévu
     /**
-     *
+     * Vriable permettant de savoir si une suppression est prévu par l'utilisateur
      */
     public Boolean suppr = false;
+    /**
+     * Variable pour stocker le vecteur de déplacement dû à la translation
+     */
     private Point_2D diffr = new Point_2D();
     //Le mouseMotionListener pour le pseudo drag and drop
     GestionDeplacementSouris motionListener = new GestionDeplacementSouris(this);
 
     /**
-     *
-     * @param vec
+     * Constructeur de l'application, prend en paramètre le Vector contenant les
+     * figures à afficher sur la ZoneDessin zd
+     * @param vec Vector<FigureGraphique>
      */
     public FenetAffiche(Vector<FigureGraphique> vec) {
         setSize(700, 500);
@@ -97,7 +96,8 @@ public class FenetAffiche extends Frame {
     }
 
     /**
-     *
+     * Méthode permettant de dessiner toues les figures, prend paramètre le
+     * Graphique pour dessiner sur la ZoneDessin zd
      * @param g
      */
     public void dessineFigs(Graphics g) {
@@ -107,26 +107,23 @@ public class FenetAffiche extends Frame {
     }
 
     /**
-     *
-     * @param color
+     * Méthode qui gère le changement de couleur
+     * @param color Color
      */
     public void changeCouleur(Color color) {
-        // faire le changement de couleur
         couranteCol = color;
     }
 
     /**
-     *
-     * @param x
-     * @param y
+     * Méthode traitant les actions pour le clique de la souris, prend en
+     * paramètre les coordonnés du clique
+     * @param x int
+     * @param y int
      */
     public void boutonSourisEnfonce(int x, int y) {
         xEnfonce = x;
         yEnfonce = y;
 
-        //Test de la gestion de déplacement de figure
-        //Je met une variable FigureGraphique pour save la derniere figure pouvant abriter les bons parametre
-        //Pour l'instant c'est pour test avec la boucle for
         Point_2D p = new Point_2D(x, y);
         for (FigureGraphique current : figs) {
             if (current.contient(p)) {
@@ -137,23 +134,19 @@ public class FenetAffiche extends Frame {
         if (!save.isEmpty()) {
             zd.addMouseMotionListener(motionListener);
         }
-        //$$3
-		/*System.out.println("bouton gauche enfoncé x:" + x + " y: "+ y);
-        Graphics g = zd.getGraphics();
-        g.drawString("<xE : "+x+", yE : "+y+">",x,y);*/
+
         listePoints.add(new Point_2D(x, y));
     }
 
     /**
-     *
-     * @param x
-     * @param y
+     * Méthode permettant les actions lors du relachement du clic de la souris, prend en
+     * parmètre les coordonnées du point de relâchement de la souris
+     * @param x int
+     * @param y int
      */
     public void boutonSourisRelache(int x, int y) {
         Graphics g = zd.getGraphics();
-        //$$3
-        //System.out.println("bouton gauche relaché x:" + x + " y: "+ y);
-        //$$4
+
         Point_2D vect = new Point_2D(Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
         if (!save.isEmpty() && saisie == false) {
             for (FigureGraphique current : save) {
@@ -171,8 +164,6 @@ public class FenetAffiche extends Frame {
             try {
                 if (choice.compareTo("cercle") == 0) {
                     saisirNom(1);
-                    //g.drawOval(xEnfonce, yEnfonce, Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
-                    //$$5
                     int rayon = Math.min(Math.abs(Math.abs(x - xEnfonce) / 2), Math.abs(y - yEnfonce));
                     Cercle cercle = new Cercle(nom, couranteCol, couranteFgCol, xEnfonce, yEnfonce, rayon);
                     cercle.dessineToi(g);
@@ -182,7 +173,6 @@ public class FenetAffiche extends Frame {
                     saisirNom(2);
                     Point_2D p = new Point_2D(Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
                     Point_2D pgh = calculeBonSens(x, y);
-                    //g.drawRect(xEnfonce, yEnfonce, p.x, p.y);
                     Rectangle rectangle = new Rectangle(nom, couranteCol, couranteFgCol, pgh.x, pgh.y, p.x, p.y);
                     rectangle.dessineToi(g);
                     figs.add(rectangle);
@@ -195,7 +185,6 @@ public class FenetAffiche extends Frame {
                             points[i] = listePoints.get(i);
                         }
                         Triangle triangle = new Triangle(nom, couranteCol, couranteFgCol, points);
-                        //g.drawPolygon(triangle.getXTab(), triangle.getYTab(), 3);
                         triangle.dessineToi(g);
                         figs.add(triangle);
                         listePoints = new ArrayList();
@@ -223,13 +212,12 @@ public class FenetAffiche extends Frame {
     }
 
     /**
-     *
-     * @param x
-     * @param y
+     * Méthode gérant les actions avec le déplacement de la souris
+     * @param x int
+     * @param y int
      */
     public void boutonSourisDeplace(int x, int y) {
         Graphics g = zd.getGraphics();
-        //Point_2D vect = new Point_2D(Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
 
         if (!save.isEmpty()) {
             trie();
@@ -263,6 +251,7 @@ public class FenetAffiche extends Frame {
         zd.repaint();
     }
 
+    //Méthode permettant la saisie du nom de la figure courante 
     private void saisirNom(int figure) throws exceptions.CreateFigureCancelled {
 
         switch (figure) {
@@ -288,6 +277,7 @@ public class FenetAffiche extends Frame {
         }
     }
 
+    //Méthode permettant de mettre au premier plan les figures sélectionnées
     private void trie() {
         Vector<FigureGraphique> temp = new Vector<FigureGraphique>(figs);
         for (FigureGraphique current : save) {
@@ -298,6 +288,7 @@ public class FenetAffiche extends Frame {
         figs.addAll(temp.size(), save);
     }
 
+    //Méthode renvoyant le bon Point_2D pour le dessin d'une figure
     private Point_2D calculeBonSens(int x, int y) {
         Point_2D point = new Point_2D(xEnfonce, yEnfonce);
 
@@ -313,16 +304,16 @@ public class FenetAffiche extends Frame {
     }
 
     /**
-     *
-     * @return
+     * Getter du Vector figs
+     * @return Vector<FigureGraphique>
      */
     public Vector<FigureGraphique> getFigs() {
         return figs;
     }
 
     /**
-     *
-     * @param figs
+     * Setter du Vector figs, prend en paramètre le Vector a associer
+     * @param figs Vector<FigureGraphique>
      */
     public void setFigs(Vector<FigureGraphique> figs) {
         this.figs = figs;

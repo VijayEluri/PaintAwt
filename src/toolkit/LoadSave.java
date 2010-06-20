@@ -1,13 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- * GIT ÇA ROXXE
- */
 package toolkit;
 
 import exceptions.*;
 import fenetres.FenetAffiche;
-import fenetres.FenetDialogues;
 import figures.FigureGraphique;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -19,17 +13,29 @@ import java.util.Vector;
 import javax.swing.JFileChooser;
 
 /**
- *5 juin 2010
- * @author agindre
+ * Class qui gère la sauvegarde et le chargement de l'application
  */
 public class LoadSave {
 
+    /**
+     * Variable contenant la FenetAffiche associée à la classs
+     */
     private FenetAffiche frame;
 
+    /**
+     * Constructeur de la class, prend en paramètre la FenetAffiche associée
+     * @param frame
+     */
     public LoadSave(FenetAffiche frame) {
         this.frame = frame;
     }
 
+    /**
+     * Méthode permettant de sauvegarder l'application
+     * @throws FileSecurity
+     * @throws FilesNull
+     * @throws FilesCorrupted
+     */
     public void save() throws FileSecurity, FilesNull, FilesCorrupted {
         JFileChooser fc = new JFileChooser();
         fc.showSaveDialog(frame);
@@ -52,6 +58,12 @@ public class LoadSave {
         }
     }
 
+    /**
+     * Méthode permettant de charger l'application
+     * @throws FileSecurity
+     * @throws FilesNull
+     * @throws FilesCorrupted
+     */
     public void load() throws FileSecurity, FilesNull, FilesCorrupted {
         JFileChooser fc = new JFileChooser();
         fc.showOpenDialog(frame);
