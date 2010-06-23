@@ -4,18 +4,33 @@ import java.awt.*;
 
 public class Cercle extends FigureGraphique {
 
-    private Point_2D centre;
+    /**
+     * Rayon du cercle
+     */
     private int rayon;
+    /**
+     * Variable de classe stockant le nomre de cercles créés
+     */
     public static int nbCercle = 0;
 
     /**
-     * Constructeurs
+     * Constructeur par défaut
      */
     public Cercle() {
         super();
     }
 
-    // constructeur valu�
+    /**
+     * Constructeur valué, qui prend en paramètre le nom, les couleurs de
+     * remplissage et de contour, les coordonnées du centre, et le rayon du
+     * cercle
+     * @param nom String
+     * @param cc Color
+     * @param cr Color
+     * @param x int
+     * @param y int
+     * @param r int
+     */
     public Cercle(String nom, Color cc, Color cr, int x, int y, int r) {
         super(nom, cc, cr, new Point_2D());
         centre = new Point_2D(x, y);
@@ -25,25 +40,68 @@ public class Cercle extends FigureGraphique {
     }
 
     /**
-     * Concretisation Figure
-     * calcul du centre du Segment
+     * Affiche le contenu des propriétés de l'objet.
+     * @return String
      */
+    @Override
     public String toString() {
         return new String(" cercle : " + nom + " centre : " + centre.toString()
                 + " rayon : " + rayon + "\n\t\t couleur remlissage: " + cr + " couleur contour " + cc);
     }
 
     /**
-     * Implementation FigureGraphique
-     * calcul du centre du cercle
+     * Accesseur du rayon du cercle
+     * @return
      */
-    public Point_2D getCentre() {
-        return centre;
+    public int getRayon() {
+        return rayon;
+    }
+
+    /**
+     * Mutateur du centre du cercle
+     * @param centre Point_2D
+     */
+    public void setCentre(Point_2D centre) {
+        this.centre = centre;
+    }
+
+    /**
+     * Mutateur du rayon du cercle
+     * @param rayon int
+     */
+    public void setRayon(int rayon) {
+        this.rayon = rayon;
     }
 
     /**
      * Concretisation FigureGraphique
-     * D�placement du cercle = deplacement du centre
+     * test de contenu
+     * @param p Point_2D
+     * @return
+     */
+    public boolean contient(Point_2D p) {
+        return (Point_2D.distance(centre, p) < rayon);
+    }
+
+    /**
+     * Fonction d'affichage du cercle dans la fenêtre d'affichage. Pour
+     * respecter les paramètres, on affiche le cercle plein, de la couleur
+     * cr, puis les contours, et le nom, de la couleur cc.
+     * @param g Graphics
+     */
+    public void dessineToi(Graphics g) {
+        g.setColor(cr);
+        g.fillOval(getCentre().x - rayon, getCentre().y - rayon, rayon * 2, rayon * 2);
+        g.setColor(cc);
+        g.drawOval(getCentre().x - rayon, getCentre().y - rayon, rayon * 2, rayon * 2);
+        g.drawString(nom, getCentre().x, getCentre().y);
+    }
+
+    /**
+     * Fonction de déplacement du cercle. Déplace seulement le centre, le reste
+     * des points étant calculé durant la fonction dessineToi
+     * @param dx int
+     * @param dy int
      */
     public void deplace(int dx, int dy) {
         centre.deplace(dx, dy);
@@ -51,50 +109,13 @@ public class Cercle extends FigureGraphique {
     }
 
     /**
-     * Concretisation FigureGraphique
-     * Affichage contenu
+     * Fontion translate, qui permet de déplacer plusieurs objets
+     * FigureGraphique selon les coordonnées d'un vecteur, présenté sous la
+     * forme d'un Point_2D.
+     * @param p Point_2D
      */
-    public void dessineToi(Graphics g) {
-        // installer la couleur du cercle
-        g.setColor(cr);
-        // dessiner le remplissage du cercle
-        g.fillOval(getCentre().x - rayon, getCentre().y - rayon, rayon * 2, rayon * 2);
-        g.setColor(cc);
-        // dessiner le contour du cercle
-        g.drawOval(getCentre().x - rayon, getCentre().y - rayon, rayon * 2, rayon * 2);
-        g.drawString(nom, getCentre().x, getCentre().y);
-    }
-
-    /**
-     * Concretisation FigureGraphique
-     * test de contenu
-     */
-    public boolean contient(Point_2D p) {
-        return (Point_2D.distance(centre, p) < rayon);
-    }
-
-    /**
-     * Concretisation de FigureGraphique
-     * calcul de surface
-     */
-    public double surface() {
-        return Math.PI * rayon * rayon;
-    }
-
     public void translate(Point_2D p) {
         centre.x = saveCentre.getX()+ p.x;
         centre.y = saveCentre.getY() + p.y;
-    }
-
-    public void setCentre(Point_2D centre) {
-        this.centre = centre;
-    }
-
-    public int getRayon() {
-        return rayon;
-    }
-
-    public void setRayon(int rayon) {
-        this.rayon = rayon;
     }
 }
