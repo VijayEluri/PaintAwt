@@ -105,9 +105,10 @@ public class Triangle extends FigureGraphique implements Serializable {
     public boolean contient(Point_2D p) {
         int i1, i2, i3;
 
-        i1 = calcPosition(points[0], points[1], p);
-        i2 = calcPosition(points[1], points[2], p);
-        i3 = calcPosition(points[2], points[0], p);
+        //on cherche le signe par rapport à chaque côté du triangle
+        i1 = positionSign(points[0], points[1], p);
+        i2 = positionSign(points[1], points[2], p);
+        i3 = positionSign(points[2], points[0], p);
 
         return ((i1 > 0) && (i2 > 0) && (i3 > 0)) || ((i1 < 0) && (i2 < 0) && (i3 < 0));
     }
@@ -120,8 +121,12 @@ public class Triangle extends FigureGraphique implements Serializable {
      * @param pos Point_2D
      * @return int
      */
-    private int calcPosition(Point_2D s1, Point_2D s2, Point_2D pos) {
-        return s1.getX() * (s2.getY() - pos.getY()) + s2.getX() * (pos.getY() - s1.getY()) + pos.getX() * (s1.getY() - s2.getY());
+    private int positionSign(Point_2D p1, Point_2D p2, Point_2D p) {
+        /**
+         * Les deux premiers points sont ceux du triangle que l'on test
+         * 
+         */
+        return p1.getX() * (p2.getY() - p.getY()) + p2.getX() * (p.getY() - p1.getY()) + p.getX() * (p1.getY() - p2.getY());
     }
 
     /**

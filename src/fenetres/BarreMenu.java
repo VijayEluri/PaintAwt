@@ -1,13 +1,13 @@
 package fenetres;
 
-import controls.ControlMenuItemAbout;
-import controls.ControlMenuItemLoad;
-import controls.ControlMenuItemNew;
+import controles.ControlMenuItemAbout;
+import controles.ControlMenuItemLoad;
+import controles.ControlMenuItemNew;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
-import controls.ControlMenuItemExit;
-import controls.ControlMenuItemSave;
+import controles.ControlMenuItemExit;
+import controles.ControlMenuItemSave;
 
 /**
  * Class qui gère la création et la mise en place du menu de l'application

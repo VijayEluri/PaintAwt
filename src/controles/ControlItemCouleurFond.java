@@ -1,4 +1,4 @@
-package controls;
+package controles;
 
 import fenetres.FenetAffiche;
 import java.awt.*;

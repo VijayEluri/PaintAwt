@@ -6,7 +6,7 @@ import figures.Point_2D;
 import figures.FigureGraphique;
 import figures.Cercle;
 import figures.Rectangle;
-import controls.*;
+import controles.*;
 import exceptions.CreateFigureCancelled;
 import figures.Polygone;
 import figures.Triangle;
@@ -67,6 +67,10 @@ public class FenetAffiche extends Frame {
      * Variable pour stocker le vecteur de déplacement dû à la translation
      */
     private Point_2D diffr = new Point_2D();
+    /**
+     * Variable pour stocker l'écart entre le centre du cercle et la taille du cercle déssiné par drawOval.
+     */
+    private Point_2D ecart = new Point_2D();
     //Le mouseMotionListener pour le pseudo drag and drop
     GestionDeplacementSouris motionListener = new GestionDeplacementSouris(this);
 
@@ -92,6 +96,7 @@ public class FenetAffiche extends Frame {
         setMenuBar(new BarreMenu(this));
         setVisible(true);
         Graphics gx = zd.getGraphics();
+        zd.addMouseMotionListener(motionListener);
         dessineFigs(gx);
     }
 
@@ -130,11 +135,6 @@ public class FenetAffiche extends Frame {
                 save.add(current);
             }
         }
-
-        if (!save.isEmpty()) {
-            zd.addMouseMotionListener(motionListener);
-        }
-
         listePoints.add(new Point_2D(x, y));
     }
 
@@ -146,7 +146,7 @@ public class FenetAffiche extends Frame {
      */
     public void boutonSourisRelache(int x, int y) {
         Graphics g = zd.getGraphics();
-
+        
         Point_2D vect = new Point_2D(Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
         if (!save.isEmpty() && saisie == false) {
             for (FigureGraphique current : save) {
@@ -158,14 +158,14 @@ public class FenetAffiche extends Frame {
                 current.dessineToi(g);
             }
             save.clear();
-            zd.removeMouseMotionListener(motionListener);
+            
         } else if (save.isEmpty() && suppr != true) {
             g.setColor(couranteCol);
             try {
                 if (choice.compareTo("cercle") == 0) {
                     saisirNom(1);
                     int rayon = Math.min(Math.abs(Math.abs(x - xEnfonce) / 2), Math.abs(y - yEnfonce));
-                    Cercle cercle = new Cercle(nom, couranteCol, couranteFgCol, xEnfonce, yEnfonce, rayon);
+                    Cercle cercle = new Cercle(nom, couranteCol, couranteFgCol, xEnfonce + (ecart.x / 2), yEnfonce + (ecart.y / 2), rayon);
                     cercle.dessineToi(g);
                     figs.add(cercle);
                     listePoints = new ArrayList();
@@ -208,7 +208,7 @@ public class FenetAffiche extends Frame {
             }
         }
         suppr = false;
-        zd.repaint();
+        zd.paint(g);
     }
 
     /**
@@ -237,17 +237,19 @@ public class FenetAffiche extends Frame {
             listePoints = new ArrayList();
         } else {
             if (choice.compareTo("cercle") == 0) {
-                Point_2D p = new Point_2D(Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
+                //ecart = new Point_2D(Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
+                ecart = calculeBonSens(x - xEnfonce, y - yEnfonce);
                 Point_2D pgh = calculeBonSens(x, y);
-                g.drawOval(pgh.x, pgh.y, p.x, p.y);
-                //System.out.println("cer" + x + " " + y);
+                g.drawOval(pgh.x, pgh.y, Math.abs(ecart.x), Math.abs(ecart.y));
+                
             } else {
                 Point_2D p = new Point_2D(Math.abs(x - xEnfonce), Math.abs(y - yEnfonce));
                 Point_2D pgh = calculeBonSens(x, y);
                 g.drawRect(pgh.x, pgh.y, p.x, p.y);
-                //System.out.println("rect" + x + " " + y);
+                
             }
         }
+        zd.paint(g);
         zd.repaint();
     }
 

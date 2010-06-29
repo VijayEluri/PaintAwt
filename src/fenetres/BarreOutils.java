@@ -1,8 +1,8 @@
 package fenetres;
 
-import controls.ControlItemCouleurFond;
-import controls.ControlItemForme;
-import controls.ControlItemCouleur;
+import controles.ControlItemCouleurFond;
+import controles.ControlItemForme;
+import controles.ControlItemCouleur;
 import java.awt.*;
 
 /**

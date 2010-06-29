@@ -1,4 +1,4 @@
-package controls;
+package controles;
 
 import java.awt.event.*;
 import fenetres.*;

@@ -128,10 +128,14 @@ public class Polygone extends FigureGraphique {
     @Override
     public boolean contient(Point_2D p) {
         boolean flag = false;
-        for (Triangle currentTr : ssTriangles) {
-            if (currentTr.contient(p)) {
-                flag = true;
-                break;
+        if (Point_2D.equal(p, centre)) {
+            flag = true;
+        } else {
+            for (Triangle currentTr : ssTriangles) {
+                if (currentTr.contient(p)) {
+                    flag = true;
+                    break;
+                }
             }
         }
         return flag;

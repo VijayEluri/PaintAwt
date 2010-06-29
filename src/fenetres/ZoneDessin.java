@@ -1,6 +1,6 @@
 package fenetres;
 
-import controls.ControlClavier;
+import controles.ControlClavier;
 import gestions.GestionBoutonsSouris;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
